@@ -5,7 +5,12 @@
   "type": "module",
   "description": "Build pipeline that bundles ByteMD 1.22.0 into WordPress-friendly IIFE assets.",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "i18n": "node i18n.mjs",
+    "notices": "node notices.mjs",
+    "lint:php": "node lint-php.mjs",
+    "package": "node package.mjs",
+    "release": "node release.mjs"
   },
   "dependencies": {
     "bytemd": "1.22.0",

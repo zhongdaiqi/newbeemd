@@ -142,7 +142,39 @@ wp-bytemd/
 
 ---
 
-## 6. 钩子
+## 6. 发版流程
+
+`build/release.mjs` 把整条发版链路串成一条命令：
+
+```powershell
+cd build
+node release.mjs patch --notes "修复：xxx"        # patch / minor / major / 1.2.3
+node release.mjs 1.0.2 --notes release-notes.md  # 说明也可以指向一个文件
+```
+
+它按顺序做五件事：
+
+1. **预检** —— 工作区干净、tag 未被占用（本地与远程都查）、新版本严格大于当前版本、`readme.txt` 里还没有该版本的 changelog 条目。任何一条不过就在**动任何文件之前**中止。
+2. **改版本** —— 同步 5 处声明：`build/package.json`、插件头 `Version:`、`WP_BYTEMD_VERSION` 常量、`readme.txt` 的 `Stable tag`、`build/src/editor.js`。漏改任意一处都会让后台显示的版本号与实际不符（`package.mjs` 打包前也会再断言一遍）。
+3. **重建产物** —— 依次跑 `build.mjs` → `i18n.mjs` → `notices.mjs` → `lint-php.mjs` → `package.mjs`，任一步失败即停止，工作区留有改动可修正后重跑。
+4. **提交并推送** —— 提交、打附注 tag、推分支与 tag。
+5. **建 Release** —— 用 `git credential fill` 取已缓存的 GitHub 凭据调 API，建 Release 并上传 zip 附件，最后**把附件下载回来与本地 zip 逐字节比对**，不一致就报错。
+
+常用参数：
+
+| 参数 | 作用 |
+| --- | --- |
+| `--notes <文件\|文本>` | **必填**。版本说明脚本不替你写；纯文本行会自动转成 changelog 条目 |
+| `--dry-run` | 打完包就停，不提交、不推送（版本号与 changelog 的改动会留在工作区，需自行 `git checkout -- .`） |
+| `--no-release` | 提交、打 tag、推送，但不建 GitHub Release |
+| `--yes` / `-y` | 跳过人工确认 |
+| `--allow-dirty` | 容忍未提交改动（仅在特殊情况下用） |
+
+> 凭据来自 Windows 凭据管理器里已缓存的 `git:https://github.com`。第一次用前先手动 `git push` 一次让凭据助手缓存令牌即可，无需在脚本里存 token。
+
+---
+
+## 7. 钩子
 
 ```php
 // 加/减内容类型
@@ -173,7 +205,7 @@ JS 侧：经典界面挂载完成后在 `document` 上派发 `wp-bytemd:ready`�
 
 ---
 
-## 7. 常见问题
+## 8. 常见问题
 
 **Q：启用了但经典界面没出现 ByteMD？**
 A：该内容类型还在用区块编辑器。到「设置 → ByteMD」勾上「对上述内容类型禁用区块编辑器」，或装 Classic Editor 插件。
@@ -192,7 +224,7 @@ A：可以，设置页里勾选即可；也可以临时用 `wp_bytemd_post_types
 
 ---
 
-## 8. 许可
+## 9. 许可
 
 本插件代码以 **MIT** 协议发布，全文见仓库根目录 `LICENSE`。
 

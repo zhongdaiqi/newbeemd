@@ -76,6 +76,20 @@ node notices.mjs      # 生成 THIRD-PARTY-NOTICES.md
 node package.mjs      # 打包 dist/wp-bytemd-<version>.zip（自带结构校验）
 ```
 
+### 发版
+
+一条命令跑完「改版本 → 重建 → 打包 → 提交 → 打 tag → 推送 → 建 Release 挂附件 → 验证下载」：
+
+```bash
+cd wp-bytemd/build
+node release.mjs patch --notes "修复：xxx"          # patch / minor / major / 1.2.3
+node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文件
+```
+
+常用参数：`--dry-run`（只到打包为止，不提交不推送）、`--no-release`（推送但不建 Release）、`--yes`（跳过确认）、`--allow-dirty`（容忍未提交改动）。
+
+发版前的工作区必须是干净的，tag 不能已存在，新版本必须大于当前版本——这些都会在改动任何文件之前检查完。版本号会同步改写 5 处（`package.json`、插件头 `Version:`、`WP_BYTEMD_VERSION`、`readme.txt` 的 `Stable tag`、`editor.js`），并在 `readme.txt` 顶部插入对应 changelog 条目。
+
 打包体积（minified）：
 
 | 文件 | 体积 | 说明 |
