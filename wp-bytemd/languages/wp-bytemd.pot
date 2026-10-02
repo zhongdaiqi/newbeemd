@@ -1,0 +1,324 @@
+# Copyright (C) 2026 ByteMD for WordPress
+# This file is distributed under the MIT license.
+msgid ""
+msgstr ""
+"Project-Id-Version: ByteMD for WordPress 1.0.1\n"
+"Report-Msgid-Bugs-To: https://github.com/bytedance/bytemd\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: wp-bytemd\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: assets/js/bytemd-block.js
+msgid "ByteMD Markdown"
+msgstr ""
+
+msgid "ByteMD 运行时加载失败："
+msgstr ""
+
+msgid "Markdown"
+msgstr ""
+
+msgid "使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。"
+msgstr ""
+
+msgid "写作"
+msgstr ""
+
+msgid "正在加载 ByteMD 编辑器…"
+msgstr ""
+
+#: includes/class-wp-bytemd-admin.php
+msgid "当前使用 WordPress 原生编辑器（ByteMD 已在本次编辑中关闭）。"
+msgstr ""
+
+msgid "未找到打包好的 ByteMD 运行时资源（assets/vendor/bytemd-editor.js）。请在插件目录执行构建，或从发行包中重新安装。"
+msgstr ""
+
+msgid "重新启用 ByteMD"
+msgstr ""
+
+#: includes/class-wp-bytemd-assets.php
+msgid "ByteMD Markdown 编辑器"
+msgstr ""
+
+msgid "从 ByteMD 上传"
+msgstr ""
+
+msgid "内容已同步到 WordPress 编辑器，可正常保存 / 预览 / 自动保存。"
+msgstr ""
+
+msgid "切换到 ByteMD Markdown 编辑器"
+msgstr ""
+
+msgid "切换到 WordPress 编辑器"
+msgstr ""
+
+msgid "只允许上传图片"
+msgstr ""
+
+msgid "图片上传失败"
+msgstr ""
+
+msgid "图表渲染失败"
+msgstr ""
+
+msgid "字符"
+msgstr ""
+
+msgid "文件超过服务器上传上限"
+msgstr ""
+
+msgid "（空文档）"
+msgstr ""
+
+#: includes/class-wp-bytemd-block.php
+msgid "ByteMD Markdown"
+msgstr ""
+
+msgid "使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。"
+msgstr ""
+
+#: includes/class-wp-bytemd-options.php
+msgid "Emoji 短代码（:smile:）"
+msgstr ""
+
+msgid "Front matter（YAML 头部，仅解析不显示）"
+msgstr ""
+
+msgid "GFM（表格 / 任务列表 / 删除线 / 自动链接）"
+msgstr ""
+
+msgid "Mermaid 图表（按需从 CDN 加载，不打包）"
+msgstr ""
+
+msgid "代码高亮（highlight.js）"
+msgstr ""
+
+msgid "回车换行（GitHub 风格软换行）"
+msgstr ""
+
+msgid "图片缩放（medium-zoom，点击放大）"
+msgstr ""
+
+msgid "数学公式（KaTeX，$…$ 与 $$…$$）"
+msgstr ""
+
+#: includes/class-wp-bytemd-settings.php
+msgid "ByteMD"
+msgstr ""
+
+msgid "ByteMD 内核"
+msgstr ""
+
+msgid "ByteMD 设置"
+msgstr ""
+
+msgid "ByteMD 集成设置"
+msgstr ""
+
+msgid "CDN 根地址"
+msgstr ""
+
+msgid "KaTeX 版本"
+msgstr ""
+
+msgid "Markdown 原文存在 post_content 中，发布时按这里的策略转成 HTML。"
+msgstr ""
+
+msgid "Markdown 文章数"
+msgstr ""
+
+msgid "Mermaid 版本"
+msgstr ""
+
+msgid "PHP 版本"
+msgstr ""
+
+msgid "Parsedown"
+msgstr ""
+
+msgid "WordPress 版本"
+msgstr ""
+
+msgid "不勾选时启用 Parsedown 安全模式，raw HTML 会被转义（拥有 unfiltered_html 权限的用户始终允许）。"
+msgstr ""
+
+msgid "不渲染（按纯文本段落输出）"
+msgstr ""
+
+msgid "两种方式的差异：服务端更快更利于收录；浏览器端能 100% 复现 ByteMD 预览（含 Mermaid / KaTeX）。"
+msgstr ""
+
+msgid "保持启用"
+msgstr ""
+
+msgid "允许 Markdown 中的原始 HTML"
+msgstr ""
+
+msgid "分屏：左编辑右预览"
+msgstr ""
+
+msgid "列表页/搜索页的摘要不再出现 ##、[]() 之类的语法符号。"
+msgstr ""
+
+msgid "前端渲染"
+msgstr ""
+
+msgid "前端渲染 Mermaid 图表"
+msgstr ""
+
+msgid "前端渲染数学公式（KaTeX）"
+msgstr ""
+
+msgid "前端渲染资源"
+msgstr ""
+
+msgid "区块编辑器"
+msgstr ""
+
+msgid "只有勾选的内容类型才会加载 ByteMD。"
+msgstr ""
+
+msgid "只有在使用内网镜像或私有 CDN 时才需要修改。"
+msgstr ""
+
+msgid "可在任意文章/页面中用 [bytemd]…[/bytemd] 包裹 Markdown 片段。"
+msgstr ""
+
+msgid "启用"
+msgstr ""
+
+msgid "启用 [bytemd] 短代码"
+msgstr ""
+
+msgid "启用的内容类型"
+msgstr ""
+
+msgid "在区块编辑器中提供 bytemd/editor 区块，Markdown 存在区块属性里，前端由服务端渲染。"
+msgstr ""
+
+msgid "在经典编辑界面（非区块编辑器）用 ByteMD 替换默认内容编辑器。作者可随时一键切回 WordPress 编辑器。"
+msgstr ""
+
+msgid "基本设置"
+msgstr ""
+
+msgid "外观与编辑器插件。ByteMD 1.22.0 已随插件打包，不依赖任何外部 CDN。"
+msgstr ""
+
+msgid "始终浅色"
+msgstr ""
+
+msgid "始终深色"
+msgstr ""
+
+msgid "对上述内容类型禁用区块编辑器"
+msgstr ""
+
+msgid "已对启用的内容类型关闭"
+msgstr ""
+
+msgid "已就绪（服务端渲染可用）"
+msgstr ""
+
+msgid "开启后，勾选的内容类型会强制走经典编辑界面（等价于 Classic Editor 插件对该类型的效果），ByteMD 才能生效。WordPress 7.1 起 Classic 区块已从区块插入器中移除，这是让 ByteMD 完整取代编辑器的推荐做法。"
+msgstr ""
+
+msgid "接管经典编辑界面"
+msgstr ""
+
+msgid "插件会同时影响编辑器预览与前端渲染结果。"
+msgstr ""
+
+msgid "显示模式"
+msgstr ""
+
+msgid "服务端渲染模式下，检测到 $…$ / $$…$$ 时按需从 CDN 加载 KaTeX。"
+msgstr ""
+
+msgid "服务端渲染（Parsedown，推荐：利于 SEO、无需前端 JS）"
+msgstr ""
+
+msgid "标签页：编辑 / 预览切换"
+msgstr ""
+
+msgid "检测到 ```mermaid 代码块时按需加载 mermaid（约 800 KB，仅在有图表的页面加载）。"
+msgstr ""
+
+msgid "正文配色"
+msgstr ""
+
+msgid "注册「ByteMD Markdown」区块"
+msgstr ""
+
+msgid "浏览器渲染（ByteMD Viewer，与编辑器预览完全一致）"
+msgstr ""
+
+msgid "渲染方式"
+msgstr ""
+
+msgid "界面语言"
+msgstr ""
+
+msgid "编辑器"
+msgstr ""
+
+msgid "编辑器内核 ByteMD %1$s（已打包，无需 CDN）；插件版本 %2$s。"
+msgstr ""
+
+msgid "编辑器插件"
+msgstr ""
+
+msgid "编辑器资源"
+msgstr ""
+
+msgid "编辑器高度（px）"
+msgstr ""
+
+msgid "缺失（仅影响浏览器渲染模式）"
+msgstr ""
+
+msgid "缺失（将退化为纯文本输出）"
+msgstr ""
+
+msgid "缺失（请执行 npm run build）"
+msgstr ""
+
+msgid "自动剥离摘要中的 Markdown 标记"
+msgstr ""
+
+msgid "自动（跟随用户语言）"
+msgstr ""
+
+msgid "自动（跟随访问者的系统偏好）"
+msgstr ""
+
+msgid "自动：窄屏标签页、宽屏分屏"
+msgstr ""
+
+msgid "范围 240 – 2000，默认 640。"
+msgstr ""
+
+msgid "跟随 WordPress 后台配色"
+msgstr ""
+
+msgid "运行状态"
+msgstr ""
+
+msgid "选择哪些内容类型使用 ByteMD，以及是否接管经典编辑界面。"
+msgstr ""
+
+msgid "配色"
+msgstr ""
+
+msgid "高级"
+msgstr ""
+
+msgid "默认 https://cdn.jsdelivr.net/npm，仅用于 KaTeX / Mermaid 这些未打包的资源。"
+msgstr ""
+
+#: includes/class-wp-bytemd.php
+msgid "设置"
+msgstr ""

@@ -1,0 +1,29 @@
+# ---- 依赖 ----
+node_modules/
+
+# ---- 构建中间产物 ----
+# esbuild 的 metafile，只用于生成第三方组件声明，不入库
+wp-bytemd/build/.metafile.json
+
+# ---- 打包产物 ----
+# 发行包走 GitHub Releases 发布，不入库（dist/.stage/ 是打包暂存目录）
+dist/
+
+# ---- 日志 / 临时文件 ----
+*.log
+*.tmp
+
+# ---- 本机环境 / 编辑器 ----
+.workbuddy/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# 注意：以下路径是构建产物，但**必须入库**，请勿加入忽略规则：
+#   wp-bytemd/assets/vendor/    esbuild 打出的 ByteMD 运行时
+# 插件要能在「服务器上没有 Node」的前提下开箱可用，这些文件就得随源码分发。
+# 改运行时行为请改 wp-bytemd/build/src/*.js 后重新 `npm run build`，不要手改产物。
+# ---------------------------------------------------------------------------

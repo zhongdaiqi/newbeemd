@@ -1,0 +1,256 @@
+/**
+ * ByteMD for WordPress — admin styles (classic edit screen + editor block).
+ */
+
+/* -------------------------------------------------------------------------
+ * Classic screen takeover
+ * ---------------------------------------------------------------------- */
+
+.wp-bytemd-wrap {
+	margin: 6px 0 20px;
+}
+
+.wp-bytemd-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	padding: 8px 14px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-bottom: 0;
+	border-radius: 4px 4px 0 0;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.wp-bytemd-toolbar-left,
+.wp-bytemd-toolbar-right {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.wp-bytemd-badge {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 10px;
+	background: #f0f0f1;
+	border: 1px solid #dcdcde;
+	color: #50575e;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .2px;
+}
+
+.wp-bytemd-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: #50575e;
+	cursor: pointer;
+	user-select: none;
+}
+
+.wp-bytemd-count {
+	font-variant-numeric: tabular-nums;
+	color: #787c82;
+}
+
+.wp-bytemd-switch {
+	text-decoration: none;
+}
+
+.wp-bytemd-hint {
+	margin: 6px 0 0;
+	color: #787c82;
+	font-size: 12px;
+}
+
+/* The editor itself. ByteMD defaults to 300px — drive it from the option. */
+.wp-bytemd-wrap .bytemd,
+.wp-bytemd-block-host .bytemd {
+	height: var(--wp-bytemd-height, 640px);
+	min-height: 320px;
+}
+
+.wp-bytemd-wrap .bytemd {
+	border: 1px solid #dcdcde;
+	border-radius: 0 0 4px 4px;
+}
+
+/* Fullscreen must sit above the admin bar (99999) and the media modal. */
+.bytemd-fullscreen {
+	z-index: 160000 !important;
+}
+
+/* Block editor integration */
+.wp-bytemd-block-host {
+	position: relative;
+	min-height: 320px;
+}
+
+.wp-bytemd-block-host .bytemd {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.wp-bytemd-block-hint {
+	margin: 8px 0 0;
+	color: #757575;
+	font-size: 12px;
+}
+
+.wp-bytemd-block-error {
+	margin-bottom: 8px;
+	padding: 8px 12px;
+	border-left: 4px solid #d63638;
+	background: #fcf0f1;
+	color: #3c434a;
+	font-size: 13px;
+}
+
+.wp-bytemd-block .block-editor-block-list__block-selection-button {
+	z-index: 30;
+}
+
+/* -------------------------------------------------------------------------
+ * Dark admin colour schemes
+ * ---------------------------------------------------------------------- */
+
+.wp-bytemd-dark .wp-bytemd-toolbar {
+	background: #1e1e1e;
+	border-color: #3c434a;
+	color: #c3c4c7;
+}
+
+.wp-bytemd-dark .wp-bytemd-badge {
+	background: #2c3338;
+	border-color: #3c434a;
+	color: #c3c4c7;
+}
+
+.wp-bytemd-dark .wp-bytemd-toggle,
+.wp-bytemd-dark .wp-bytemd-count,
+.wp-bytemd-dark .wp-bytemd-hint {
+	color: #a7aaad;
+}
+
+.wp-bytemd-dark .bytemd,
+.wp-bytemd-dark .bytemd * {
+	border-color: #3c434a;
+}
+
+.wp-bytemd-dark .bytemd {
+	background: #1e1e1e;
+	color: #e0e0e0;
+}
+
+.wp-bytemd-dark .bytemd-toolbar {
+	background: #23282d;
+	color: #c3c4c7;
+}
+
+.wp-bytemd-dark .bytemd-toolbar-icon:hover {
+	background: #2c3338;
+}
+
+.wp-bytemd-dark .bytemd-status {
+	background: #23282d;
+	color: #a7aaad;
+	border-top-color: #3c434a;
+}
+
+.wp-bytemd-dark .bytemd-split .bytemd-preview,
+.wp-bytemd-dark .bytemd-sidebar {
+	border-left-color: #3c434a;
+}
+
+.wp-bytemd-dark .CodeMirror {
+	background: #1e1e1e;
+	color: #e0e0e0;
+}
+
+.wp-bytemd-dark .CodeMirror-gutters {
+	background: #23282d;
+	border-right-color: #3c434a;
+}
+
+.wp-bytemd-dark .CodeMirror-linenumber {
+	color: #71767c;
+}
+
+.wp-bytemd-dark .CodeMirror-cursor {
+	border-left-color: #e0e0e0;
+}
+
+.wp-bytemd-dark .CodeMirror-selected {
+	background: #3c434a !important;
+}
+
+.wp-bytemd-dark .CodeMirror-line::selection,
+.wp-bytemd-dark .CodeMirror-line > span::selection,
+.wp-bytemd-dark .CodeMirror-line > span > span::selection {
+	background: #3c434a;
+}
+
+.wp-bytemd-dark .cm-s-default .cm-header {
+	color: #9ecbff;
+}
+
+.wp-bytemd-dark .markdown-body {
+	color: #e0e0e0;
+	background: transparent;
+}
+
+.wp-bytemd-dark .markdown-body h1,
+.wp-bytemd-dark .markdown-body h2 {
+	border-bottom-color: #3c434a;
+}
+
+.wp-bytemd-dark .markdown-body hr {
+	background-color: #3c434a;
+}
+
+.wp-bytemd-dark .markdown-body blockquote {
+	color: #a7aaad;
+	border-left-color: #3c434a;
+}
+
+.wp-bytemd-dark .markdown-body code {
+	background: #2c3338;
+	color: #e0e0e0;
+}
+
+.wp-bytemd-dark .markdown-body pre {
+	background: #16181a;
+}
+
+.wp-bytemd-dark .markdown-body table tr {
+	background: transparent;
+	border-top-color: #3c434a;
+}
+
+.wp-bytemd-dark .markdown-body table tr:nth-child(2n) {
+	background: #23282d;
+}
+
+.wp-bytemd-dark .markdown-body table td,
+.wp-bytemd-dark .markdown-body table th {
+	border-color: #3c434a;
+}
+
+/* -------------------------------------------------------------------------
+ * Settings screen
+ * ---------------------------------------------------------------------- */
+
+.wp-bytemd-settings .card {
+	max-width: 100%;
+}
+
+.wp-bytemd-settings .widefat th {
+	font-weight: 600;
+}

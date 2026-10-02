@@ -1,0 +1,25 @@
+{
+  "name": "wp-bytemd-build",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Build pipeline that bundles ByteMD 1.22.0 into WordPress-friendly IIFE assets.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "bytemd": "1.22.0",
+    "@bytemd/plugin-breaks": "1.22.0",
+    "@bytemd/plugin-frontmatter": "1.22.0",
+    "@bytemd/plugin-gemoji": "1.22.0",
+    "@bytemd/plugin-gfm": "1.22.0",
+    "@bytemd/plugin-highlight": "1.22.0",
+    "@bytemd/plugin-math": "1.22.0",
+    "@bytemd/plugin-medium-zoom": "1.22.0",
+    "highlight.js": "11.11.1",
+    "katex": "0.16.25"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

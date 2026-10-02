@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ByteMD for WordPress — 效果演示</title>
+
+<!-- ByteMD 运行时的样式（与插件内 assets/vendor 完全同一份文件） -->
+<link rel="stylesheet" href="./wp-bytemd/assets/vendor/bytemd-editor.css">
+<!-- 插件的前端 Markdown 主题 -->
+<link rel="stylesheet" href="./wp-bytemd/assets/css/bytemd-content.css">
+
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 28px 20px 64px;
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f6f7f7;
+    color: #1f2328;
+  }
+  .shell { max-width: 1080px; margin: 0 auto; }
+  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header p { margin: 0 0 22px; color: #59636e; }
+  .panel {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    margin-bottom: 26px;
+    overflow: hidden;
+  }
+  .panel > h2 {
+    margin: 0;
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #50575e;
+    background: #fbfbfc;
+    border-bottom: 1px solid #dcdcde;
+  }
+  .panel-body { padding: 18px; }
+  .panel-body.no-pad { padding: 0; }
+  .bytemd { height: 520px; border: 0 !important; border-radius: 0 !important; }
+  .note {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border-left: 4px solid #2271b1;
+    background: #f0f6fc;
+    color: #3c434a;
+    border-radius: 0 4px 4px 0;
+  }
+  .note code { background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 4px; }
+  .meta { color: #787c82; font-size: 12px; margin-top: 10px; }
+  .meta b { color: #50575e; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <h1>ByteMD 1.22.0 · WordPress 插件效果演示</h1>
+    <p>本页直接用插件里打包好的 <code>assets/vendor/bytemd-editor.js</code> 与 <code>bytemd-viewer.js</code> 驱动，用来确认运行时资源可用、外观符合预期。</p>
+  </header>
+
+  <p class="note">
+    下半部分的渲染结果由插件的 <code>assets/js/bytemd-frontend.js</code> 挂载 —— 也就是站点切换到「浏览器渲染」模式时前端实际走的代码路径。
+  </p>
+
+  <section class="panel">
+    <h2>1 · 编辑器（对应后台经典编辑界面接管 / bytemd/editor 区块）</h2>
+    <div class="panel-body no-pad">
+      <div id="editor"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>2 · 前端渲染结果（对应 the_content / 区块输出）</h2>
+    <div class="panel-body">
+      <div id="viewer-host"></div>
+    </div>
+  </section>
+
+  <p class="meta">
+    说明：编辑器包 <b>1160 KB</b>（含 CodeMirror、KaTeX、精简版 highlight.js），viewer 包 <b>878 KB</b>，
+    KaTeX 字体 <b>254 KB</b>（仅 woff2）。Mermaid 与公式的 CDN 资源按需加载，不在包内。
+  </p>
+
+</div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ * 1) 编辑器：与 wp-bytemd/assets/js 里同样的初始化方式
+ * ------------------------------------------------------------------ */
+var SAMPLE = [
+  '# ByteMD × WordPress',
+  '',
+  '把 [ByteMD](https://github.com/bytedance/bytemd) 挂到 WordPress 上，**写作体验**和**前端渲染**都能管住。',
+  '',
+  '## 关键点',
+  '',
+  '- 经典编辑界面接管，作者可随时切回原生编辑器',
+  '- `bytemd/editor` 动态区块，内容存区块属性',
+  '- 图片拖拽 / 粘贴直传媒体库',
+  '- 服务端 Parsedown 渲染，或浏览器端 Viewer 渲染',
+  '',
+  '## 代码高亮',
+  '',
+  '```php',
+  "add_filter( 'wp_bytemd_post_types', function ( $types ) {",
+  "    return array_merge( $types, array( 'page' ) );",
+  '} );',
+  '```',
+  '',
+  '## 表格与任务列表',
+  '',
+  '| 项目 | 状态 | 体积 |',
+  '| --- | --- | --- |',
+  '| bytemd-editor.js | 已打包 | 1160 KB |',
+  '| bytemd-viewer.js | 已打包 | 878 KB |',
+  '| mermaid | 按需 CDN | — |',
+  '',
+  '- [x] 经典界面接管',
+  '- [x] 区块编辑器支持',
+  '- [ ] 你正在看的这个演示页',
+  '',
+  '## 公式',
+  '',
+  '行内公式 $E = mc^2$，块级公式：',
+  '',
+  '$$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$$',
+  '',
+  '> 段落引用、*斜体*、~~删除线~~ 都正常。',
+  '',
+].join('\n');
+
+var pluginsConfig = {
+  gfm: true, highlight: true, math: true, breaks: true,
+  gemoji: true, mediumZoom: true, frontmatter: false, mermaid: false
+};
+
+function boot() {
+  if (!window.WPByteMD || !window.WPByteMD.Editor) {
+    document.getElementById('editor').textContent = 'ByteMD 运行时未加载，请确认 assets/vendor/bytemd-editor.js 存在。';
+    return;
+  }
+
+  var editor = new window.WPByteMD.Editor({
+    target: document.getElementById('editor'),
+    props: {
+      value: SAMPLE,
+      plugins: window.WPByteMD.buildPlugins(pluginsConfig, {}),
+      mode: 'split',
+      locale: window.WPByteMD.locales.zh_Hans,
+      placeholder: '开始写 Markdown…',
+      editorConfig: { lineWrapping: true }
+    }
+  });
+
+  document.addEventListener('wp-bytemd-demo-change', function () {});
+  editor.$on('change', function (e) {
+    mountViewer(e.detail.value);
+  });
+
+  mountViewer(SAMPLE);
+}
+
+/* ------------------------------------------------------------------ *
+ * 2) 前端渲染：复用插件的 bytemd-frontend.js 代码路径
+ * ------------------------------------------------------------------ */
+window.wpByteMDViewer = {
+  renderMode: 'client',
+  plugins: pluginsConfig,
+  math: {
+    enabled: true,
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css',
+    js: 'https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.js',
+    render: 'https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/auto-render.min.js'
+  },
+  mermaid: {
+    enabled: true,
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
+    theme: 'default'
+  },
+  strings: { mermaidError: '图表渲染失败' }
+};
+
+function b64utf8(text) {
+  return window.btoa(unescape(encodeURIComponent(text)));
+}
+
+var mounted = [];
+
+function mountViewer(markdown) {
+  if (!window.WPByteMD || !window.WPByteMD.Viewer) {
+    return;
+  }
+  var host = document.getElementById('viewer-host');
+  host.innerHTML = '';
+
+  var target = document.createElement('div');
+  target.className = 'wp-bytemd-viewer-host';
+  target.setAttribute('data-bytemd-viewer', '1');
+  target.setAttribute('data-bytemd-payload', b64utf8(markdown));
+  host.appendChild(target);
+
+  new window.WPByteMD.Viewer({
+    target: target,
+    props: {
+      value: markdown,
+      plugins: window.WPByteMD.buildPlugins(pluginsConfig, { mermaid: window.wpByteMDViewer.mermaid })
+    }
+  });
+
+  mounted.push(target);
+}
+</script>
+
+<!-- 编辑器运行时：与插件 wp_enqueue_script 加载的是同一个文件 -->
+<script src="./wp-bytemd/assets/vendor/bytemd-editor.js"></script>
+<!-- 前端运行时 -->
+<script src="./wp-bytemd/assets/vendor/bytemd-viewer.js"></script>
+<script src="./wp-bytemd/assets/js/bytemd-frontend.js"></script>
+
+<script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+</script>
+</body>
+</html>

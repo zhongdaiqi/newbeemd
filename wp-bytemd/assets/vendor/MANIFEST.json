@@ -1,0 +1,42 @@
+{
+  "name": "wp-bytemd vendor assets",
+  "bytemd": "1.22.0",
+  "generatedAt": "2026-10-02T06:49:50.184Z",
+  "dev": false,
+  "files": {
+    "bytemd-editor.css": {
+      "bytes": 36976,
+      "kb": 36.1
+    },
+    "bytemd-editor.js": {
+      "bytes": 1187734,
+      "kb": 1159.9
+    },
+    "bytemd-viewer.css": {
+      "bytes": 36976,
+      "kb": 36.1
+    },
+    "bytemd-viewer.js": {
+      "bytes": 899259,
+      "kb": 878.2
+    },
+    "fonts/": {
+      "note": "KaTeX woff2 web fonts",
+      "count": 20,
+      "bytes": 259792,
+      "kb": 253.7
+    }
+  },
+  "dependencies": {
+    "bytemd": "1.22.0",
+    "@bytemd/plugin-breaks": "1.22.0",
+    "@bytemd/plugin-frontmatter": "1.22.0",
+    "@bytemd/plugin-gemoji": "1.22.0",
+    "@bytemd/plugin-gfm": "1.22.0",
+    "@bytemd/plugin-highlight": "1.22.0",
+    "@bytemd/plugin-math": "1.22.0",
+    "@bytemd/plugin-medium-zoom": "1.22.0",
+    "highlight.js": "11.11.1",
+    "katex": "0.16.25"
+  }
+}
