@@ -13,7 +13,6 @@
     "release": "node release.mjs"
   },
   "dependencies": {
-    "bytemd": "1.22.0",
     "@bytemd/plugin-breaks": "1.22.0",
     "@bytemd/plugin-frontmatter": "1.22.0",
     "@bytemd/plugin-gemoji": "1.22.0",
@@ -21,8 +20,10 @@
     "@bytemd/plugin-highlight": "1.22.0",
     "@bytemd/plugin-math": "1.22.0",
     "@bytemd/plugin-medium-zoom": "1.22.0",
+    "bytemd": "1.22.0",
     "highlight.js": "11.11.1",
-    "katex": "0.16.25"
+    "katex": "0.16.25",
+    "mermaid": "11.17.2"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

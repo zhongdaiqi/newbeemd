@@ -6,8 +6,9 @@
  *  1. Client rendering — mount ByteMD's `Viewer` into every
  *     `[data-bytemd-viewer]` placeholder that PHP printed.
  *  2. Post-processing for server-rendered Markdown — KaTeX for `$…$` / `$$…$$`
- *     and Mermaid for ```mermaid fences, loaded from a CDN *only* when the page
- *     actually contains them.
+ *     and Mermaid for ```mermaid fences. Both ship inside the plugin and are
+ *     requested *only* when the page actually contains them; no third-party
+ *     server is ever contacted.
  *
  * @package WP_ByteMD
  */
@@ -100,7 +101,7 @@
 	}
 
 	/**
-	 * Load the Mermaid ESM build outside of any bundler.
+	 * Load the Mermaid runtime bundled with the plugin.
 	 *
 	 * @return {Promise<Object>} Mermaid instance.
 	 */
@@ -111,16 +112,22 @@
 			return window[ mem ];
 		}
 
-		var importer = new Function( 'u', 'return import(u)' );
+		window[ mem ] = loadScript( 'wp-bytemd-mermaid-js', config.mermaid.src )
+			.then( function () {
+				var mermaid = window.WPByteMDMermaid;
 
-		window[ mem ] = importer( config.mermaid.src )
-			.then( function ( mod ) {
-				var mermaid = mod.default || mod;
+				if ( ! mermaid ) {
+					throw new Error( 'Mermaid 运行时未定义' );
+				}
+
 				mermaid.initialize( {
 					startOnLoad: false,
-					securityLevel: 'loose',
+					// Post content may be written by lower-privileged users, so
+					// `strict` stays on: it blocks HTML labels and click handlers.
+					securityLevel: 'strict',
 					theme: config.mermaid.theme || 'default',
 				} );
+
 				return mermaid;
 			} )
 			.catch( function ( error ) {
@@ -185,10 +192,9 @@
 
 		loadStyle( 'wp-bytemd-katex-css', config.math.css );
 
+		// `bytemd-katex.js` bundles KaTeX together with the auto-render
+		// extension, so a single request covers both.
 		return loadScript( 'wp-bytemd-katex-js', config.math.js )
-			.then( function () {
-				return loadScript( 'wp-bytemd-katex-render', config.math.render );
-			} )
 			.then( function () {
 				if ( 'function' !== typeof window.renderMathInElement ) {
 					return;

@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       ByteMD for WordPress
+ * Plugin Name:       WP Markdown Editor (ByteMD)
  * Plugin URI:        https://github.com/zhongdaiqi/wpbytemd
- * Description:       将字节跳动开源的 ByteMD Markdown 编辑器集成进 WordPress：经典编辑界面接管、区块编辑器区块、Markdown 存储与前端渲染、图片直传媒体库。
+ * Description:       Markdown editing for WordPress powered by ByteMD. Split-pane editor with GFM, code highlighting, KaTeX and Mermaid, plus server- or client-side rendering of the stored Markdown.
  * Version:           1.0.1
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      7.4
  * Author:            钟代麒
- * Author URI:        https://dingzhixia.com
+ * Author URI:        https://github.com/zhongdaiqi
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       wp-bytemd

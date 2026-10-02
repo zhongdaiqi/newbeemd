@@ -1,6 +1,6 @@
-# ByteMD for WordPress
+# WP Markdown Editor (ByteMD)
 
-把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
+把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件（slug：`wp-bytemd`）。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ByteMD](https://img.shields.io/badge/ByteMD-1.22.0-informational)](https://github.com/bytedance/bytemd)
@@ -18,8 +18,8 @@
 - **前端渲染三选一** —— 服务端 Parsedown（默认，SEO 友好）/ 浏览器 ByteMD Viewer（与编辑器预览 100% 一致）/ 不渲染。
 - **图片拖拽粘贴直传媒体库** —— 走 REST 接口，复用 WordPress 的权限与类型校验。
 - **不误伤老文章** —— 只有带 `_wp_bytemd_markdown` 标记的文章才按 Markdown 渲染，旧 HTML 文章编辑时该选项默认不选。
-- **零 CDN 依赖启动** —— ByteMD、highlight.js、KaTeX 全部本地打包；Mermaid 与前端 KaTeX 只在页面上真的出现图表/公式时才按需加载。
-- 完整 i18n（`wp-bytemd.pot`，100 条字符串）、7 个扩展钩子、简体中文文档。
+- **零外部请求** —— ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，运行时不联系任何第三方服务器（含字体）。KaTeX 与 Mermaid 只在页面上真的出现公式/图表时才加载。
+- 完整 i18n（`wp-bytemd.pot`）、7 个扩展钩子、简体中文文档。
 
 ## 环境要求
 
@@ -58,7 +58,7 @@ npm run build        # 产出 ../assets/vendor/*
 
 ## 配置
 
-设置页分四组：基本设置（内容类型、接管经典界面、禁用区块编辑器、注册区块）、编辑器（显示模式、高度、配色、界面语言、各功能插件开关）、前端渲染（渲染方式、正文配色、原始 HTML、KaTeX / Mermaid 按需加载、短代码、摘要剥离）、高级（CDN 根地址，便于内网镜像）。
+设置页分四组：基本设置（内容类型、接管经典界面、禁用区块编辑器、注册区块）、编辑器（显示模式、高度、配色、界面语言、各功能插件开关）、前端渲染（渲染方式、正文配色、原始 HTML、KaTeX / Mermaid 按需加载、短代码、摘要剥离），以及一段「关于外部资源」的说明——本插件不向任何第三方服务器发起请求，所以没有 CDN 之类的可调项。
 
 完整设置项与钩子列表见 **[wp-bytemd/README-zh.md](wp-bytemd/README-zh.md)**。
 
@@ -96,9 +96,13 @@ node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文
 | --- | --- | --- |
 | `bytemd-editor.js` | **1160 KB** | 后台编辑器，仅在编辑页加载 |
 | `bytemd-viewer.js` | **878 KB** | 仅"浏览器渲染"模式的前端才加载 |
+| `bytemd-katex.js` / `.css` | 261 KB / 21 KB | 仅服务端渲染且页面含公式时加载 |
+| `bytemd-mermaid.js` | **3410 KB** | 仅页面含 ```mermaid 代码块时加载 |
 | `fonts/` | 254 KB / 20 个 | KaTeX 字体，只保留 woff2 |
 
-两处显著瘦身：`highlight.js` 通过 esbuild `onResolve` 只打包 37 种常用语言（否则会把 190+ 种语法内联、约 1.1 MB）；KaTeX 字体剔除 woff/ttf 只留 woff2（-40 个文件 / -600 KB）。
+三处显著瘦身：`highlight.js` 通过 esbuild `onResolve` 只打包 37 种常用语言（否则会把 190+ 种语法内联、约 1.1 MB）；KaTeX 字体剔除 woff/ttf 只留 woff2（-40 个文件 / -600 KB）；字体瘦身放在 esbuild 的 `onLoad` 阶段完成，让旧格式文件**根本不生成**，而不是生成后再删。
+
+> 为什么 Mermaid 要单独成文件而不是塞进编辑器 bundle：它体积是其余所有产物之和。拆出来后，不含图表的页面一个字节都不会多下载。
 
 ## 目录结构
 
@@ -126,7 +130,7 @@ node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文
 默认走服务端渲染（Parsedown），与 ByteMD 预览的解析器不同，表格、公式这类细节会有差异。想要完全一致就把渲染方式改成「浏览器渲染」。
 
 **公式和图表不显示？**
-检查设置页顶部的「运行状态」面板和 KaTeX / Mermaid 开关；内网环境请把 CDN 根地址换成自建镜像。
+检查设置页顶部的「运行状态」面板，确认 `bytemd-katex.js` / `bytemd-mermaid.js` 都显示为「已就绪」；再看前端渲染那组开关有没有关掉。顺带一提：本插件不请求任何外部资源，所以在内网/离线环境同样能正常工作，不需要配镜像。
 
 ## 致谢
 
@@ -138,4 +142,14 @@ node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文
 
 本项目代码以 **MIT** 协议发布，全文见 [LICENSE](LICENSE)。
 
-打包进发行物的第三方组件及其完整许可证文本见 **[wp-bytemd/THIRD-PARTY-NOTICES.md](wp-bytemd/THIRD-PARTY-NOTICES.md)**。共 115 个组件：114 个 MIT、1 个 BSD-3-Clause（highlight.js）。由于构建时使用 esbuild 的 `legalComments: 'none'`，产物内部不含任何许可注释，该文档即为承担声明义务的载体，由 `node build/notices.mjs` 从 esbuild metafile 自动生成。
+打包进发行物的第三方组件及其完整许可证文本见 **[wp-bytemd/THIRD-PARTY-NOTICES.md](wp-bytemd/THIRD-PARTY-NOTICES.md)**。共 **171 个组件**，全部为 GPL 兼容许可：
+
+| 许可 | 数量 | 代表组件 |
+| --- | --- | --- |
+| MIT | 134 | bytemd、katex、mermaid、codemirror-ssr |
+| ISC | 29 | d3 系列、delaunator、internmap |
+| BSD-3-Clause | 6 | highlight.js、d3-array / d3-shape / d3-sankey |
+| MPL-2.0 OR Apache-2.0（双许可，取 MPL-2.0） | 1 | dompurify |
+| Unlicense（等同公有领域） | 1 | robust-predicates |
+
+由于构建时使用 esbuild 的 `legalComments: 'none'`，产物内部不含任何许可注释，该文档即为承担声明义务的载体，由 `node build/notices.mjs` 从 esbuild metafile 自动生成。

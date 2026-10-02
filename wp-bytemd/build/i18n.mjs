@@ -101,12 +101,12 @@ for (const [msgid, refs] of found) {
 const escapePo = (value) =>
   value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')
 
-const header = `# Copyright (C) 2026 ByteMD for WordPress
+const header = `# Copyright (C) 2026 WP Markdown Editor (ByteMD)
 # This file is distributed under the MIT license.
 msgid ""
 msgstr ""
-"Project-Id-Version: ByteMD for WordPress ${JSON.parse(await fs.readFile(path.join(pluginDir, 'build', 'package.json'), 'utf8')).version}\\n"
-"Report-Msgid-Bugs-To: https://github.com/bytedance/bytemd\\n"
+"Project-Id-Version: WP Markdown Editor (ByteMD) ${JSON.parse(await fs.readFile(path.join(pluginDir, 'build', 'package.json'), 'utf8')).version}\\n"
+"Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/wpbytemd/issues\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8bit\\n"

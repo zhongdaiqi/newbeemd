@@ -164,13 +164,13 @@ class WP_ByteMD_Settings {
 						'id'    => 'frontend_math',
 						'type'  => 'checkbox',
 						'title' => __( '前端渲染数学公式（KaTeX）', 'wp-bytemd' ),
-						'desc'  => __( '服务端渲染模式下，检测到 $…$ / $$…$$ 时按需从 CDN 加载 KaTeX。', 'wp-bytemd' ),
+						'desc'  => __( '服务端渲染模式下，页面中出现 $…$ / $$…$$ 时才加载插件内置的 KaTeX 资源。', 'wp-bytemd' ),
 					),
 					array(
 						'id'    => 'frontend_mermaid',
 						'type'  => 'checkbox',
 						'title' => __( '前端渲染 Mermaid 图表', 'wp-bytemd' ),
-						'desc'  => __( '检测到 ```mermaid 代码块时按需加载 mermaid（约 800 KB，仅在有图表的页面加载）。', 'wp-bytemd' ),
+						'desc'  => __( '页面中出现 ```mermaid 代码块时才加载插件内置的 Mermaid（约 3.3 MB，不占用普通页面）。', 'wp-bytemd' ),
 					),
 					array(
 						'id'    => 'enable_shortcode',
@@ -187,26 +187,9 @@ class WP_ByteMD_Settings {
 				),
 			),
 			'advanced' => array(
-				'title'  => __( '高级', 'wp-bytemd' ),
-				'intro'  => __( '只有在使用内网镜像或私有 CDN 时才需要修改。', 'wp-bytemd' ),
-				'fields' => array(
-					array(
-						'id'    => 'cdn_base',
-						'type'  => 'text',
-						'title' => __( 'CDN 根地址', 'wp-bytemd' ),
-						'desc'  => __( '默认 https://cdn.jsdelivr.net/npm，仅用于 KaTeX / Mermaid 这些未打包的资源。', 'wp-bytemd' ),
-					),
-					array(
-						'id'    => 'katex_version',
-						'type'  => 'text',
-						'title' => __( 'KaTeX 版本', 'wp-bytemd' ),
-					),
-					array(
-						'id'    => 'mermaid_version',
-						'type'  => 'text',
-						'title' => __( 'Mermaid 版本', 'wp-bytemd' ),
-					),
-				),
+				'title'  => __( '关于外部资源', 'wp-bytemd' ),
+				'intro'  => __( '本插件不向任何第三方服务器发起请求：ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，仅在实际用到时才加载对应文件。所谓「高级设置」在这里没有存在的必要。', 'wp-bytemd' ),
+				'fields' => array(),
 			),
 		);
 	}
@@ -425,14 +408,12 @@ class WP_ByteMD_Settings {
 		) ? $input['locale'] : 'auto';
 
 		// --- Scalars ----------------------------------------------------
-		$out['editor_height']  = max( 240, min( 2000, absint( isset( $input['editor_height'] ) ? $input['editor_height'] : $defaults['editor_height'] ) ) );
-		$out['cdn_base']       = esc_url_raw( trim( (string) ( isset( $input['cdn_base'] ) ? $input['cdn_base'] : $defaults['cdn_base'] ) ) );
-		$out['katex_version']  = sanitize_text_field( isset( $input['katex_version'] ) ? $input['katex_version'] : $defaults['katex_version'] );
-		$out['mermaid_version'] = sanitize_text_field( isset( $input['mermaid_version'] ) ? $input['mermaid_version'] : $defaults['mermaid_version'] );
+		$out['editor_height'] = max( 240, min( 2000, absint( isset( $input['editor_height'] ) ? $input['editor_height'] : $defaults['editor_height'] ) ) );
 
-		if ( '' === $out['cdn_base'] ) {
-			$out['cdn_base'] = $defaults['cdn_base'];
-		}
+		// Options that previous versions exposed for CDN overrides. They are
+		// gone in 1.1.0 because all runtime assets ship with the plugin; drop
+		// them so a stale value can never linger in the database.
+		unset( $out['cdn_base'], $out['katex_version'], $out['mermaid_version'] );
 
 		/**
 		 * Filter the sanitised settings before saving.
@@ -495,19 +476,35 @@ class WP_ByteMD_Settings {
 			}
 		}
 
-		$editor_js = WP_BYTEMD_DIR . 'assets/vendor/bytemd-editor.js';
-		$viewer_js = WP_BYTEMD_DIR . 'assets/vendor/bytemd-viewer.js';
+		/**
+		 * Describe one bundled runtime file.
+		 *
+		 * @param string $file    File name inside `assets/vendor/`.
+		 * @param string $missing Message to show when the file is absent.
+		 * @return string
+		 */
+		$describe = static function ( $file, $missing ) {
+			$path = WP_BYTEMD_DIR . 'assets/vendor/' . $file;
+
+			if ( ! file_exists( $path ) ) {
+				return $missing;
+			}
+
+			return sprintf(
+				'%s — %s KB',
+				$file,
+				number_format_i18n( round( filesize( $path ) / 1024, 1 ), 1 )
+			);
+		};
 
 		$rows = array(
 			__( 'WordPress 版本', 'wp-bytemd' )      => get_bloginfo( 'version' ),
 			__( 'PHP 版本', 'wp-bytemd' )            => PHP_VERSION,
 			__( 'ByteMD 内核', 'wp-bytemd' )         => $manifest && ! empty( $manifest['bytemd'] ) ? $manifest['bytemd'] : WP_BYTEMD_BYTEMD_VERSION,
-			__( '编辑器资源', 'wp-bytemd' )          => file_exists( $editor_js )
-				? sprintf( 'bytemd-editor.js — %s KB', number_format_i18n( round( filesize( $editor_js ) / 1024, 1 ), 1 ) )
-				: __( '缺失（请执行 npm run build）', 'wp-bytemd' ),
-			__( '前端渲染资源', 'wp-bytemd' )        => file_exists( $viewer_js )
-				? sprintf( 'bytemd-viewer.js — %s KB', number_format_i18n( round( filesize( $viewer_js ) / 1024, 1 ), 1 ) )
-				: __( '缺失（仅影响浏览器渲染模式）', 'wp-bytemd' ),
+			__( '编辑器资源', 'wp-bytemd' )          => $describe( 'bytemd-editor.js', __( '缺失（请执行 npm run build）', 'wp-bytemd' ) ),
+			__( '前端渲染资源', 'wp-bytemd' )        => $describe( 'bytemd-viewer.js', __( '缺失（仅影响浏览器渲染模式）', 'wp-bytemd' ) ),
+			__( 'KaTeX 资源', 'wp-bytemd' )          => $describe( 'bytemd-katex.js', __( '缺失（公式不会在前端渲染）', 'wp-bytemd' ) ),
+			__( 'Mermaid 资源', 'wp-bytemd' )        => $describe( 'bytemd-mermaid.js', __( '缺失（图表不会在前端渲染）', 'wp-bytemd' ) ),
 			__( 'Parsedown', 'wp-bytemd' )           => file_exists( WP_BYTEMD_DIR . 'vendor/parsedown/Parsedown.php' )
 				? __( '已就绪（服务端渲染可用）', 'wp-bytemd' )
 				: __( '缺失（将退化为纯文本输出）', 'wp-bytemd' ),

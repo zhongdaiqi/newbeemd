@@ -1,6 +1,6 @@
-=== ByteMD for WordPress ===
+=== WP Markdown Editor (ByteMD) ===
 Contributors: zhongdaiqi
-Tags: markdown, editor, bytemd, gfm, katex
+Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -8,66 +8,101 @@ Stable tag: 1.0.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-ByteMD（字节跳动开源的 Markdown 编辑器）集成插件：经典编辑界面接管、区块编辑器区块、Markdown 存储与前端渲染。
+Write and publish Markdown in WordPress with ByteMD: a split-pane editor with GFM tables, code highlighting, KaTeX maths and Mermaid diagrams.
 
 == Description ==
 
-把 ByteMD 1.22.0 完整搬进 WordPress，运行时不依赖任何 CDN（KaTeX / Mermaid 等重型库按需从 CDN 加载）。
+This plugin brings the [ByteMD](https://github.com/bytedance/bytemd) Markdown editor to WordPress. ByteMD 1.22.0 is bundled with the plugin, so nothing has to be fetched from the internet while you write.
 
-**两种集成方式**
+**Two ways to write**
 
-1. **经典编辑界面接管** — 在内容类型对应的编辑页面上，用 ByteMD 替换 WordPress 默认编辑器。文本框仍在 DOM 中并实时同步，因此保存、预览、自动保存、修订版本、REST、WP-CLI 全部照常工作。作者可随时点“切换到 WordPress 编辑器”回到原生编辑器。
-2. **区块编辑器区块** — 提供 `bytemd/editor` 区块（可见名“ByteMD Markdown”）。Markdown 存在区块属性里，前端由 PHP 渲染，是动态区块，不会把生成的 HTML 写进数据库。
+1. **Classic editor takeover** — on the post types you select, ByteMD replaces the default content editor. The original textarea stays in the DOM and is kept in sync on every keystroke, so saving, previewing, autosave, revisions, the REST API and WP-CLI all keep working. Authors can switch back to the WordPress editor with one click at any time.
+2. **Editor block** — a `bytemd/editor` block named "ByteMD Markdown" is registered for the block editor. The Markdown lives in the block attributes and is rendered on the server, so no generated HTML is stored in the database.
 
-**前端渲染**
+**Three ways to render the front end**
 
-Markdown 原文保存在 `post_content` 中，发布时按设置转成 HTML：
+Markdown is stored as-is in `post_content`, and the public output is produced according to your setting:
 
-* 服务端渲染（默认，Parsedown + ParsedownExtra，利于 SEO，无需前端 JS）
-* 浏览器渲染（ByteMD Viewer，与编辑器预览 100% 一致）
-* 不渲染（按纯文本段落输出）
+* **Server-side** (default) — Parsedown + ParsedownExtra. Good for SEO, no JavaScript required.
+* **Client-side** — ByteMD's Viewer, so the public page matches the editor preview exactly.
+* **None** — the Markdown is output as plain paragraphs.
 
-还支持 `[bytemd]…[/bytemd]` 短代码、摘要自动剥离 Markdown 标记、KaTeX 公式与 Mermaid 图表按需加载。
+KaTeX and Mermaid are still applied on top of server-rendered output, but only on pages that actually contain maths or a diagram.
 
-== Installation ==
+**Also included**
 
-1. 上传 `wp-bytemd` 目录到 `/wp-content/plugins/`。
-2. 在“插件”页面启用。
-3. 打开“设置 → ByteMD”，勾选需要启用的内容类型。
-4. 若该内容类型仍在用区块编辑器，勾选“对上述内容类型禁用区块编辑器”，经典编辑界面即会出现 ByteMD。
+* Drag, paste or pick images; they are uploaded straight into the Media Library.
+* GFM tables, task lists, strikethrough, autolinks.
+* Code highlighting through highlight.js.
+* A `[bytemd]…[/bytemd]` shortcode for Markdown fragments anywhere on a site.
+* Optional stripping of Markdown syntax from excerpts.
+* A per-post "Render this post as Markdown" toggle, so converting a site does not touch existing HTML posts.
 
-发行包中已包含编译好的 `assets/vendor/` 资源，无需 Node 环境。若从源码安装，请先执行：
+**Privacy**
+
+This plugin never contacts an external server. The editor, highlight.js, KaTeX and Mermaid all ship inside the plugin and are loaded only on pages that need them. There is no telemetry, no third-party CDN request, and no account.
+
+**Source code and build tools**
+
+Development happens on GitHub: https://github.com/zhongdaiqi/wpbytemd
+
+The plugin ships with its own build tooling in `build/`. To rebuild the bundled runtime from source:
 
     cd wp-content/plugins/wp-bytemd/build
     npm install
     npm run build
 
+**Credits and licence**
+
+ByteMD is an open source project by ByteDance, released under the MIT licence. This plugin is an independent, unofficial integration and is not affiliated with or endorsed by ByteDance. The full list of bundled components and their licences is in `THIRD-PARTY-NOTICES.md` inside the plugin.
+
+== Installation ==
+
+1. Upload the `wp-bytemd` folder to `/wp-content/plugins/`, or install the ZIP through **Plugins → Add New → Upload Plugin**.
+2. Activate the plugin.
+3. Go to **Settings → ByteMD** and select the post types you want to write in Markdown.
+4. If those post types still use the block editor, tick **Disable the block editor for the post types above** so that the classic editing screen — and therefore ByteMD — appears.
+
+Prebuilt assets are included, so no Node.js installation is required on the server.
+
 == Frequently Asked Questions ==
 
-= 需要安装 Classic Editor 插件吗？ =
+= Do I need the Classic Editor plugin? =
 
-不需要。本插件可以自行对指定内容类型关闭区块编辑器。
+No. This plugin can disable the block editor for the post types you choose by itself.
 
-= WordPress 7.1 移除了 Classic 区块，会影响吗？ =
+= WordPress 7.1 removed the Classic block. Does that break anything? =
 
-不影响。7.1 只是把 Classic 区块从区块插入器里移除；不使用区块编辑器的内容类型仍然走经典编辑界面，ByteMD 正是接管这个界面。
+No. 7.1 only removed the Classic block from the block inserter. Post types that do not use the block editor still open the classic editing screen, and that is the screen ByteMD takes over.
 
-= 启用后已有文章会乱掉吗？ =
+= Will my existing posts break? =
 
-不会。只有被写入 `_wp_bytemd_markdown` 标记的文章才会按 Markdown 渲染。编辑界面上“按 Markdown 渲染本文”勾选框可逐个控制。
+No. Only posts carrying the `_wp_bytemd_markdown` flag are rendered as Markdown. The "Render this post as Markdown" checkbox controls that flag per post, and posts written in the block editor are never touched.
 
-= 图片怎么上传？ =
+= How do images get uploaded? =
 
-在编辑器里拖拽、粘贴或点工具栏图片按钮，文件会通过 REST 接口直接进入 WordPress 媒体库。
+Drag, paste, or use the image button in the editor toolbar. Files are sent to the Media Library through the WordPress REST API, so the same capability checks apply as anywhere else in the admin.
+
+= Does it need internet access or a CDN? =
+
+No. Every asset is served from the plugin directory, which also makes the plugin safe to use on intranets and offline installations.
+
+= Where can I get help? =
+
+Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
 
 == Changelog ==
 
 = 1.0.1 =
-* 修复：发行包 zip 的条目名使用了反斜杠作为路径分隔符，导致 WordPress 解压后生不出插件目录、启用时报「插件文件不存在」。
-* 打包流程改为纯 Node 实现，不再依赖外部压缩工具；打包后回读压缩包逐条校验 CRC 与条目名。
-* 新增 `THIRD-PARTY-NOTICES.md`（115 个第三方组件的许可声明）；补齐 Parsedown / ParsedownExtra 的 LICENSE 文件。
-* `Plugin URI` 指向本插件仓库，并声明为非官方集成。
-* 不再把构建中间产物（esbuild metafile）打进发行包，压缩包体积由约 1.5 MB 降至 0.98 MB。
+* Fixed the release archive: entry names used a backslash as the path separator, which made WordPress extract no plugin folder at all and report "Plugin file does not exist" on activation.
+* Bundling is now done in pure Node, with a read-back check of every entry and CRC.
+* Added `THIRD-PARTY-NOTICES.md`, plus the Parsedown licence files that were missing.
+* Build intermediates (the esbuild metafile) no longer end up in the archive.
 
 = 1.0.0 =
-* 首个版本：ByteMD 1.22.0、经典界面接管、区块、服务端/浏览器渲染、图片直传、KaTeX、Mermaid、短代码。
+* First release: ByteMD 1.22.0, classic editor takeover, editor block, server/client rendering, image uploads, KaTeX, Mermaid, shortcode.
+
+== Upgrade Notice ==
+
+= 1.0.1 =
+Fixes activation failing with "Plugin file does not exist" on servers whose unzip implementation follows the ZIP specification strictly.

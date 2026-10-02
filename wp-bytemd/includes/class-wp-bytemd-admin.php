@@ -272,10 +272,20 @@ class WP_ByteMD_Admin {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified below.
 		if ( ! isset( $_POST['wp_bytemd_active'] ) ) {
 			// Not a save coming from a ByteMD-managed screen (Quick Edit, REST,
 			// XML-RPC…): leave the flag alone.
+			return;
+		}
+
+		// Anything claiming to come from a ByteMD screen must carry a valid
+		// post nonce. `wp_verify_nonce` is pluggable, so the value is sanitised
+		// before it is handed over.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified here.
+		$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'update-post_' . $post_id ) ) {
 			return;
 		}
 

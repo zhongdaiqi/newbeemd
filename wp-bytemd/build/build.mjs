@@ -8,8 +8,14 @@
  * Output (../assets/vendor):
  *   bytemd-editor.js / .css   admin editor bundle  (Editor + CodeMirror)
  *   bytemd-viewer.js / .css   front-end viewer bundle (Viewer only)
+ *   bytemd-katex.js / .css    standalone KaTeX + auto-render, loaded on demand
+ *   bytemd-mermaid.js         standalone Mermaid, loaded only when a page has a diagram
  *   fonts/                    KaTeX fonts referenced by the CSS
  *   MANIFEST.json             versions + sizes, used by the PHP side for cache busting
+ *
+ * Every runtime asset is bundled locally on purpose: WordPress.org guideline 8
+ * requires that all non-service related JavaScript and CSS be served from the
+ * plugin, so nothing may be pulled from a third-party CDN at runtime.
  */
 
 import { build } from 'esbuild'
@@ -49,10 +55,54 @@ const hljsShimPlugin = {
   },
 }
 
+/**
+ * KaTeX ships woff2 + woff + ttf for every face. Every browser WordPress
+ * supports understands woff2, so the legacy formats are ~600 KB of dead
+ * weight.
+ *
+ * The diet is applied while *loading* the CSS, before esbuild resolves the
+ * `url()` references — so the legacy files are never emitted in the first
+ * place. Pruning them afterwards instead would mean a bulk delete on every
+ * build, which is slow and gets refused outright in some sandboxed
+ * environments.
+ *
+ * @param {string} css Stylesheet source.
+ * @return {string} Stylesheet with only the woff2 sources left in `@font-face`.
+ */
+function stripLegacyFontFormats(css) {
+  return css.replace(/@font-face\s*\{[^}]*\}/gi, (block) =>
+    block.replace(/(src\s*:\s*)([^;}]+)/i, (whole, head, value) => {
+      const kept = value
+        .split(',')
+        .filter((part) => !/\.(woff|ttf|eot)(["')\s]|$)/i.test(part))
+      return kept.length ? head + kept.join(',') : whole
+    })
+  )
+}
+
+const fontDietPlugin = {
+  name: 'font-diet',
+  setup(build) {
+    build.onLoad({ filter: /\.css$/ }, async (args) => {
+      const css = await fs.readFile(args.path, 'utf8')
+      if (!css.includes('@font-face')) {
+        return null
+      }
+      return {
+        contents: stripLegacyFontFormats(css),
+        loader: 'css',
+        resolveDir: path.dirname(args.path),
+      }
+    })
+  },
+}
+
 const result = await build({
   entryPoints: {
     'bytemd-editor': path.join(__dirname, 'src', 'editor.js'),
     'bytemd-viewer': path.join(__dirname, 'src', 'viewer.js'),
+    'bytemd-katex': path.join(__dirname, 'src', 'katex.js'),
+    'bytemd-mermaid': path.join(__dirname, 'src', 'mermaid.js'),
   },
   outdir,
   bundle: true,
@@ -64,7 +114,7 @@ const result = await build({
   legalComments: 'none',
   metafile: true,
   logLevel: 'info',
-  plugins: [hljsShimPlugin],
+  plugins: [hljsShimPlugin, fontDietPlugin],
   define: {
     'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production'),
     global: 'globalThis',
@@ -88,7 +138,7 @@ const result = await build({
  * CSS and delete the files (~600 KB, 40 files).
  * ------------------------------------------------------------------------ */
 
-const cssFiles = ['bytemd-editor.css', 'bytemd-viewer.css']
+const cssFiles = ['bytemd-editor.css', 'bytemd-viewer.css', 'bytemd-katex.css']
 const usedFonts = new Set()
 
 for (const name of cssFiles) {
@@ -112,12 +162,25 @@ for (const name of cssFiles) {
   await fs.writeFile(file, css, 'utf8')
 }
 
+/* Safety net: `fontDietPlugin` should already have kept the legacy formats out
+ * of the build entirely, so this normally finds nothing. It exists to catch a
+ * stylesheet that slipped through, and to sweep up files left over from an
+ * older build. Failures are reported rather than swallowed — a partial cleanup
+ * used to be reported as a success, which silently shipped stray font files. */
 let removedFonts = 0
+const strayFonts = []
+
 try {
-  for (const file of await fs.readdir(path.join(outdir, 'fonts'))) {
-    if (!usedFonts.has(file)) {
-      await fs.rm(path.join(outdir, 'fonts', file), { force: true })
+  const fontsDir = path.join(outdir, 'fonts')
+  for (const file of await fs.readdir(fontsDir)) {
+    if (usedFonts.has(file)) {
+      continue
+    }
+    try {
+      await fs.rm(path.join(fontsDir, file), { force: true })
       removedFonts += 1
+    } catch (err) {
+      strayFonts.push(`${file} (${err.code || err.message})`)
     }
   }
 } catch {
@@ -180,5 +243,12 @@ const report = Object.entries(manifest.files)
   .join('\n')
 console.log('\nByteMD %s bundled for WordPress:\n%s\n', vendorVersions.bytemd, report)
 if (removedFonts) {
-  console.log('Pruned %d legacy font files (woff/ttf) — woff2 only.\n', removedFonts)
+  console.log('Swept %d stray font file(s) left over from an earlier build.\n', removedFonts)
+}
+if (strayFonts.length) {
+  console.warn(
+    'WARNING: %d font file(s) could not be removed and WILL ship in the archive:\n%s',
+    strayFonts.length,
+    strayFonts.map((f) => `  ${f}`).join('\n')
+  )
 }

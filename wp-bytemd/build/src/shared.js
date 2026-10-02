@@ -58,32 +58,58 @@ export function buildPlugins(enabled, extra = {}) {
  * ---------------------------------------------------------------------- */
 
 /**
- * Mermaid is ~3 MB of JS and would dwarf the rest of the bundle, so it is
- * *not* bundled. Instead we load the ESM build from a CDN (or any URL the
- * site owner configures) the first time a diagram actually appears.
+ * Mermaid is ~3 MB, so it is kept out of this bundle and shipped as its own
+ * file (`assets/vendor/bytemd-mermaid.js`). It is injected the first time a
+ * diagram actually appears.
+ *
+ * It has to come from the plugin directory rather than a CDN: WordPress.org
+ * guideline 8 forbids calling third-party CDNs for non-service JavaScript.
  */
 let mermaidPromise = null
 
-function dynamicImport(url) {
-  // Hidden from esbuild on purpose: keeps the import at runtime.
-  const importer = new Function('u', 'return import(u)')
-  return importer(url)
+/**
+ * Inject a classic <script> and resolve once it has executed.
+ *
+ * @param {string} src Absolute URL.
+ * @return {Promise<void>} Resolves when the runtime is available.
+ */
+function injectScript(src) {
+  return new Promise((resolve, reject) => {
+    if (window.WPByteMDMermaid) {
+      resolve()
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = src
+    script.async = true
+    script.addEventListener('load', () => resolve())
+    script.addEventListener('error', () => reject(new Error('Mermaid 资源加载失败：' + src)))
+    document.head.appendChild(script)
+  })
 }
 
 export function loadMermaid(config) {
-  const cfg = Object.assign(
-    { src: 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs', theme: 'default' },
-    config || {}
-  )
+  const cfg = Object.assign({ src: '', theme: 'default' }, config || {})
+
   if (!mermaidPromise) {
-    mermaidPromise = dynamicImport(cfg.src)
-      .then((mod) => {
-        const mermaid = mod.default || mod
+    mermaidPromise = injectScript(cfg.src)
+      .then(() => {
+        const mermaid = window.WPByteMDMermaid
+
+        if (!mermaid) {
+          throw new Error('Mermaid 运行时未定义')
+        }
+
         mermaid.initialize({
           startOnLoad: false,
-          securityLevel: 'loose',
+          // `strict` blocks HTML labels and click handlers. Post content can be
+          // written by lower-privileged users, so never relax this on a site
+          // that renders other people's Markdown.
+          securityLevel: 'strict',
           theme: cfg.theme === 'auto' ? 'default' : cfg.theme,
         })
+
         return mermaid
       })
       .catch((err) => {
@@ -91,6 +117,7 @@ export function loadMermaid(config) {
         throw err
       })
   }
+
   return mermaidPromise
 }
 

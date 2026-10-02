@@ -42,7 +42,7 @@ class WP_ByteMD_Options {
 			'breaks'      => __( '回车换行（GitHub 风格软换行）', 'wp-bytemd' ),
 			'gemoji'      => __( 'Emoji 短代码（:smile:）', 'wp-bytemd' ),
 			'mediumZoom'  => __( '图片缩放（medium-zoom，点击放大）', 'wp-bytemd' ),
-			'mermaid'     => __( 'Mermaid 图表（按需从 CDN 加载，不打包）', 'wp-bytemd' ),
+			'mermaid'     => __( 'Mermaid 图表（随插件打包，仅在含图表的页面加载）', 'wp-bytemd' ),
 			'frontmatter' => __( 'Front matter（YAML 头部，仅解析不显示）', 'wp-bytemd' ),
 		);
 	}
@@ -88,11 +88,6 @@ class WP_ByteMD_Options {
 			'frontend_theme'         => 'auto',
 			'enable_shortcode'       => 1,
 			'strip_markdown_excerpt' => 1,
-
-			// Assets.
-			'cdn_base'               => 'https://cdn.jsdelivr.net/npm',
-			'mermaid_version'        => '11',
-			'katex_version'          => '0.16.25',
 		);
 	}
 
@@ -216,22 +211,47 @@ class WP_ByteMD_Options {
 	}
 
 	/**
-	 * KaTeX / Mermaid / auto-render URLs derived from the configured CDN.
+	 * URLs of the runtime assets that are loaded on demand.
+	 *
+	 * Everything is served from the plugin itself. WordPress.org guideline 8
+	 * requires that all non-service related JavaScript and CSS be bundled
+	 * locally, so there is deliberately no CDN fallback here.
 	 *
 	 * @return array<string, string>
 	 */
-	public static function cdn_urls() {
-		$base  = untrailingslashit( (string) self::get( 'cdn_base', 'https://cdn.jsdelivr.net/npm' ) );
-		$base  = '' === $base ? 'https://cdn.jsdelivr.net/npm' : $base;
-		$merm  = (string) self::get( 'mermaid_version', '11' );
-		$katex = (string) self::get( 'katex_version', '0.16.25' );
-
+	public static function asset_urls() {
 		return array(
-			'mermaid'  => $base . '/mermaid@' . $merm . '/dist/mermaid.esm.min.mjs',
-			'katex_js' => $base . '/katex@' . $katex . '/dist/katex.min.js',
-			'katex_re' => $base . '/katex@' . $katex . '/dist/contrib/auto-render.min.js',
-			'katex_css' => $base . '/katex@' . $katex . '/dist/katex.min.css',
+			'mermaid'   => self::vendor_url( 'bytemd-mermaid.js' ),
+			'katex_js'  => self::vendor_url( 'bytemd-katex.js' ),
+			'katex_css' => self::vendor_url( 'bytemd-katex.css' ),
 		);
+	}
+
+	/**
+	 * Build a cache-busted URL for a file in `assets/vendor/`.
+	 *
+	 * @param string $file File name.
+	 * @return string
+	 */
+	private static function vendor_url( $file ) {
+		$path = WP_BYTEMD_DIR . 'assets/vendor/' . $file;
+		$url  = WP_BYTEMD_URL . 'assets/vendor/' . $file;
+
+		if ( file_exists( $path ) ) {
+			$url = add_query_arg( 'ver', WP_BYTEMD_VERSION . '.' . filemtime( $path ), $url );
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Is a bundled runtime asset present on disk?
+	 *
+	 * @param string $file File name inside `assets/vendor/`.
+	 * @return bool
+	 */
+	public static function vendor_asset_exists( $file ) {
+		return file_exists( WP_BYTEMD_DIR . 'assets/vendor/' . $file );
 	}
 
 	/**

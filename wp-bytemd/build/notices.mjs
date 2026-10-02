@@ -92,6 +92,41 @@ async function firstLicenseFile(dir) {
   }
 }
 
+/**
+ * Pull the copyright notice out of a licence file.
+ *
+ * Only a real notice counts, i.e. "Copyright (c) 2024 Somebody". Matching on
+ * the bare word "copyright" instead picks up the boilerplate preamble of some
+ * licences — MPL-2.0 defines "Licensor" in terms of "copyright owner", and the
+ * Unlicense mentions "copyright laws" — and files that text away as if it were
+ * an attribution.
+ *
+ * @param {string} rawText Licence file contents.
+ * @return {string} The notice, or an empty string when there is none.
+ */
+function extractCopyright(rawText) {
+  const notice = /copyright\s*(?:\(c\)|©|\(C\))?\s*\d{4}/i
+  const lines = rawText.split(/\r?\n/)
+  const idx = lines.findIndex((l) => notice.test(l))
+
+  if (idx < 0) {
+    return ''
+  }
+
+  return lines
+    .slice(idx, idx + 2)
+    .map((l) => l.trim())
+    .filter((l) => notice.test(l))
+    .join(' ')
+    .trim()
+}
+
+/**
+ * Read the licence identifier out of a package.json.
+ *
+ * @param {object} pkg Parsed package.json.
+ * @return {string|null} SPDX-ish identifier, or null.
+ */
 function normalizeLicense(pkg) {
   const raw = typeof pkg.license === 'string'
     ? pkg.license
@@ -119,16 +154,7 @@ for (const [name, dir] of packages) {
 
   if (licensePath) {
     rawText = await fs.readFile(licensePath, 'utf8')
-    const lines = rawText.split(/\r?\n/)
-    const idx = lines.findIndex((l) => /copyright/i.test(l))
-    if (idx >= 0) {
-      copyright = lines
-        .slice(idx, idx + 2)
-        .map((l) => l.trim())
-        .filter((l) => /copyright/i.test(l))
-        .join(' ')
-        .trim()
-    }
+    copyright = extractCopyright(rawText)
   }
 
   let license = normalizeLicense(pkg)
@@ -182,7 +208,33 @@ const manifest = await fs
 const out = []
 out.push('# 第三方组件声明 / Third-Party Notices')
 out.push('')
-out.push('**ByteMD for WordPress** 的发行包（`dist/wp-bytemd-*.zip`）与浏览器产物中，包含了下列第三方开源组件。')
+out.push('## Summary (English)')
+out.push('')
+out.push('This plugin bundles the ByteMD editor together with its dependency tree into')
+out.push('`assets/vendor/*.js`. The build uses esbuild with `legalComments: \'none\'`,')
+out.push('which strips every comment from the output — so the copyright and licence')
+out.push('notices of those components cannot travel inside the bundles and are carried')
+out.push('by this document instead. Both the MIT and the BSD-3-Clause licence require')
+out.push('the copyright notice to be distributed with the software, which is why this')
+out.push('file ships inside the plugin.')
+out.push('')
+out.push(`It covers **${components.length} components**. Every one of them is released under a`)
+out.push('licence that is compatible with the GPL, which is what the WordPress plugin')
+out.push('directory requires:')
+out.push('')
+for (const license of order) {
+  out.push(`* **${license}** — ${byLicense.get(license).length} component(s)`)
+}
+out.push('')
+out.push('Section 1 lists each component with its version and copyright notice.')
+out.push('Section 2 reproduces the full licence text of each licence family.')
+out.push('Section 3 states the relationship to the upstream ByteMD project.')
+out.push('')
+out.push('---')
+out.push('')
+out.push('## 中文说明')
+out.push('')
+out.push('**WP Markdown Editor (ByteMD)** 的发行包（`dist/wp-bytemd-*.zip`）与浏览器产物中，包含了下列第三方开源组件。')
 out.push('')
 out.push('构建脚本使用 esbuild 把 ByteMD 及其依赖树打包进 `assets/vendor/*.js`，并设置了')
 out.push("`legalComments: 'none'`——该选项会移除输出中的所有注释，因此这些组件的版权与许可证声明")
@@ -197,7 +249,7 @@ out.push('> 本文档由 `node build/notices.mjs` 自动生成，请勿手工修
 out.push('')
 out.push('---')
 out.push('')
-out.push('## 一、组件清单')
+out.push('## 1. 组件清单 / Component list')
 out.push('')
 
 for (const license of order) {
@@ -214,7 +266,7 @@ for (const license of order) {
 
 out.push('---')
 out.push('')
-out.push('## 二、许可证全文')
+out.push('## 2. 许可证全文 / Licence texts')
 out.push('')
 
 for (const license of order) {
@@ -237,7 +289,7 @@ for (const license of order) {
 
 out.push('---')
 out.push('')
-out.push('## 三、关于名称与官方关系')
+out.push('## 3. 关于名称与官方关系 / Name and affiliation')
 out.push('')
 out.push('本插件是**非官方**的第三方集成，与字节跳动（ByteDance）及 ByteMD 项目官方无隶属或背书关系。')
 out.push('“ByteMD”为其开源项目名称，此处仅用于说明本插件所集成的编辑器组件。')

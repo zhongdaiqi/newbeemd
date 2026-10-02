@@ -1,11 +1,13 @@
-# ByteMD for WordPress
+# WP Markdown Editor (ByteMD)
 
-把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。
+把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。slug：`wp-bytemd`。
 
 > 名称说明：ByteMD v2 已改名为 HashMD，因此 `bytemd` 这条线的最新版本就是 **1.22.0**（核心包与全部官方插件同版本号）。本插件锁定并打包 1.22.0。
+>
+> 展示名取“WP Markdown Editor (ByteMD)”是为了符合 WordPress.org 指南第 17 条——插件名不宜以他人项目名开头（`WP-KaTeX` 这类 `WP-` 前缀是被允许的写法）。目录 URL（slug）与展示名相互独立，slug 保持不变。
 
 - 插件目录：`wp-bytemd/`
-- 安装包：`dist/wp-bytemd-1.0.1.zip`
+- 安装包：`dist/wp-bytemd-<version>.zip`
 - 依赖：PHP ≥ 7.4，WordPress ≥ 6.5（在 7.1.x 上开发与验证）
 
 ---
@@ -83,12 +85,12 @@ node i18n.mjs        # 可选：重新生成 languages/wp-bytemd.pot
 | 渲染方式 | 服务端（Parsedown，默认）/ 浏览器（ByteMD Viewer）/ 不渲染 |
 | 正文配色 | 自动（跟随系统偏好）/ 浅色 / 深色 |
 | 允许原始 HTML | 关闭时启用 Parsedown 安全模式，raw HTML 被转义（有 `unfiltered_html` 权限的用户始终允许） |
-| 前端渲染数学公式 | 检出 `$…$` / `$$…$$` 才从 CDN 加载 KaTeX |
-| 前端渲染 Mermaid | 检出 ```mermaid 才加载 mermaid（约 800KB，只在该页面加载） |
+| 前端渲染数学公式 | 检出 `$…$` / `$$…$$` 才加载插件内置的 KaTeX |
+| 前端渲染 Mermaid | 检出 ```mermaid 才加载插件内置的 Mermaid（约 3.3MB，只在该页面加载） |
 | 启用 `[bytemd]` 短代码 | 任意文章里包裹 Markdown 片段 |
 | 自动剥离摘要中的 Markdown | 列表/搜索页摘要不再出现 `##`、`[]()` |
 
-**高级**：CDN 根地址、KaTeX 版本、Mermaid 版本（内网镜像可改）。
+**关于外部资源**：插件不提供 CDN 之类的设置项，因为它根本不会向第三方服务器发起请求。旧版本曾暴露「CDN 根地址 / KaTeX 版本 / Mermaid 版本」三个选项，1.1.0 起已移除——所有运行时资源都随插件分发，保存设置时这些历史值也会被清掉。
 
 ---
 
@@ -102,14 +104,18 @@ node i18n.mjs        # 可选：重新生成 languages/wp-bytemd.pot
 | `assets/vendor/bytemd-editor.css` | 36 KB | |
 | `assets/vendor/bytemd-viewer.js` | **878 KB** | 仅“浏览器渲染”模式的前端才加载 |
 | `assets/vendor/bytemd-viewer.css` | 36 KB | |
-| `assets/vendor/fonts/` | 254 KB / 20 个 | KaTeX 字体，已剔除 woff/ttf，只留 woff2 |
+| `assets/vendor/bytemd-katex.js` | 261 KB | 仅服务端渲染且页面含公式时加载 |
+| `assets/vendor/bytemd-katex.css` | 21 KB | |
+| `assets/vendor/bytemd-mermaid.js` | **3410 KB** | 仅页面含 ```mermaid 代码块时加载 |
+| `assets/vendor/fonts/` | 254 KB / 20 个 | KaTeX 字体，只留 woff2 |
 
-做过两处显著瘦身：
+做过三处显著瘦身：
 
 1. **highlight.js 只打包 37 种语言**。`@bytemd/plugin-highlight` 里写的是 `await import('highlight.js')`，esbuild 会把 190+ 种语法全部内联（约 1.1MB）。构建脚本用 esbuild 的 `onResolve` 把它重定向到 `build/src/hljs.js`——只注册常用语言并补好 `html→xml`、`sh→bash`、`js→javascript` 等别名。编辑器包从 1939KB 降到 1160KB。
-2. **KaTeX 字体只留 woff2**。构建后重写 CSS 的 `@font-face` 并删除 woff/ttf，砍掉 40 个文件、约 600KB。
+2. **KaTeX 字体只留 woff2**。借助 esbuild 的 `onLoad` 在**读取 CSS 时**就把 `@font-face` 里的 woff/ttf 源删掉，旧格式文件因此根本不生成，省下 40 个文件、约 600KB。（早期做法是构建后再删，会触发沙箱的批量删除限制，而且删失败被 `catch` 吞掉后会**静默把旧字体打进发行包**。）
+3. **Mermaid 独立成文件**。它的体积比其余所有产物加起来还大，所以不编进编辑器/查看器 bundle，而是单独产出 `bytemd-mermaid.js`，只在页面真的出现图表时才 `enqueue`。
 
-Mermaid **完全不打包**：插件用自写的 viewerEffect 在检测到图表时才从 CDN 动态 `import()`。
+> 为什么不再从 CDN 加载：WordPress.org 官方指南第 8 条明确要求「所有非服务相关的 JavaScript 和 CSS 必须在本地包含」，第 7 条也把「把脚本等资源卸载到第三方」列为禁止的追踪行为。要提交插件目录，这两条是硬门槛。
 
 ---
 
@@ -120,7 +126,7 @@ wp-bytemd/
 ├── wp-bytemd.php                  插件头、常量、引导
 ├── includes/
 │   ├── class-wp-bytemd.php        单例、模块装配、激活/卸载
-│   ├── class-wp-bytemd-options.php 选项读写、默认值、CDN URL 推导
+│   ├── class-wp-bytemd-options.php 选项读写、默认值、内置资源 URL 推导
 │   ├── class-wp-bytemd-assets.php  资源注册、asset_version 缓存戳、JS 配置对象
 │   ├── class-wp-bytemd-admin.php   经典界面接管、save_post 写标记、通知
 │   ├── class-wp-bytemd-block.php   bytemd/editor 动态区块注册与渲染
@@ -217,7 +223,7 @@ A：源码安装没执行构建。设置页顶部的「运行状态」会直接�
 A：默认走服务端渲染（Parsedown），和 ByteMD 预览的解析器不同，表格/公式这类细节会有差异。想要完全一致就把渲染方式改成「浏览器渲染」。
 
 **Q：公式和图表不显示？**
-A：检查「运行状态」以及设置里的 KaTeX / Mermaid 开关；内网环境请把 CDN 根地址换成自建镜像。
+A：先看设置页顶部的「运行状态」，确认 `bytemd-katex.js` / `bytemd-mermaid.js` 都显示「已就绪」；再看前端渲染那两组开关有没有被关掉。本插件不请求外部资源，内网 / 离线环境不需要任何额外配置。
 
 **Q：能同时用在页面、自定义文章类型上吗？**
 A：可以，设置页里勾选即可；也可以临时用 `wp_bytemd_post_types` 过滤器。
@@ -237,8 +243,11 @@ A：可以，设置页里勾选即可；也可以临时用 `wp_bytemd_post_types
 | [ByteMD](https://github.com/bytedance/bytemd) 及其官方插件 | MIT |
 | [Parsedown](https://github.com/erusev/parsedown) / [ParsedownExtra](https://github.com/erusev/parsedown-extra) | MIT |
 | [KaTeX](https://katex.org/) | MIT |
+| [Mermaid](https://mermaid.js.org/) | MIT |
 | [CodeMirror](https://codemirror.net/)（经 `codemirror-ssr`） | MIT |
 | [highlight.js](https://highlightjs.org/) | BSD-3-Clause |
-| 其余 110 个传递依赖 | 均为 MIT |
+| 其余传递依赖 | 均为 MIT |
+
+组件总数与逐条版权署名以 `THIRD-PARTY-NOTICES.md` 为准：它由 `node build/notices.mjs` 读取 esbuild metafile 生成，只列出**真正进了产物**的包（esbuild 会 tree-shake，按 `package.json` 遍历会多算 26 个）。
 
 **非官方声明**：本插件是第三方非官方集成，与字节跳动（ByteDance）及 ByteMD 项目官方无隶属或背书关系。“ByteMD”为其开源项目名称，此处仅用于说明所集成的编辑器组件。

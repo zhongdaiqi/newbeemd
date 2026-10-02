@@ -159,7 +159,7 @@ class WP_ByteMD_Assets {
 	 */
 	public static function admin_config() {
 		$toggles = WP_ByteMD_Options::get( 'plugins', array() );
-		$cdn     = WP_ByteMD_Options::cdn_urls();
+		$assets  = WP_ByteMD_Options::asset_urls();
 
 		$allowed = array();
 		foreach ( get_allowed_mime_types() as $ext => $mime ) {
@@ -177,8 +177,8 @@ class WP_ByteMD_Assets {
 			'theme'          => (string) WP_ByteMD_Options::get( 'theme', 'auto' ),
 			'plugins'        => array_map( 'boolval', (array) $toggles ),
 			'mermaid'        => array(
-				'enabled' => ! empty( $toggles['mermaid'] ),
-				'src'     => $cdn['mermaid'],
+				'enabled' => ! empty( $toggles['mermaid'] ) && WP_ByteMD_Options::vendor_asset_exists( 'bytemd-mermaid.js' ),
+				'src'     => $assets['mermaid'],
 				'theme'   => ( 'dark' === WP_ByteMD_Options::get( 'theme', 'auto' ) ) ? 'dark' : 'default',
 			),
 			'restEndpoint'   => esc_url_raw( rest_url( 'wp/v2/media' ) ),
@@ -206,20 +206,19 @@ class WP_ByteMD_Assets {
 	 */
 	public static function frontend_config() {
 		$toggles = WP_ByteMD_Options::get( 'plugins', array() );
-		$cdn     = WP_ByteMD_Options::cdn_urls();
+		$assets  = WP_ByteMD_Options::asset_urls();
 
 		return array(
 			'renderMode' => (string) WP_ByteMD_Options::get( 'frontend_render', 'server' ),
 			'plugins'    => array_map( 'boolval', (array) $toggles ),
 			'math'       => array(
-				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_math' ),
-				'css'     => $cdn['katex_css'],
-				'js'      => $cdn['katex_js'],
-				'render'  => $cdn['katex_re'],
+				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_math' ) && WP_ByteMD_Options::vendor_asset_exists( 'bytemd-katex.js' ),
+				'css'     => $assets['katex_css'],
+				'js'      => $assets['katex_js'],
 			),
 			'mermaid'    => array(
-				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_mermaid' ),
-				'src'     => $cdn['mermaid'],
+				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_mermaid' ) && WP_ByteMD_Options::vendor_asset_exists( 'bytemd-mermaid.js' ),
+				'src'     => $assets['mermaid'],
 				'theme'   => 'default',
 			),
 			'strings'    => array(
