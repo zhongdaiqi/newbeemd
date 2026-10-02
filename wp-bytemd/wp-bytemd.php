@@ -5,7 +5,6 @@
  * Description:       Markdown editing for WordPress powered by ByteMD. Split-pane editor with GFM, code highlighting, KaTeX and Mermaid, plus server- or client-side rendering of the stored Markdown.
  * Version:           1.2.0
  * Requires at least: 6.5
- * Tested up to:      7.1
  * Requires PHP:      7.4
  * Author:            钟代麒
  * Author URI:        https://github.com/zhongdaiqi

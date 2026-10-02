@@ -56,6 +56,14 @@ if (mismatched.length) {
 
 console.log(`版本一致性检查通过：${version}（${declarations.length} 处声明）`)
 
+// The Plugin Directory's automated scan rejects a submission outright when the
+// main PHP header repeats `Tested up to` — it belongs in readme.txt only, so
+// the two copies cannot drift apart. Catch it here instead of at upload time.
+if (/^\s*\*\s*Tested up to:/m.test(mainFile)) {
+  console.error('打包失败：wp-bytemd.php 头部出现了 "Tested up to"，它只能写在 readme.txt 里。')
+  process.exit(1)
+}
+
 // The readme changelog drives the WordPress.org "Changelog" tab; a missing
 // entry silently drops the release notes for this version.
 if (!readme.includes(`= ${version} =`)) {
@@ -68,6 +76,10 @@ const EXCLUDED_DIRS = new Set(['node_modules', 'build', '.git', '.github', '.ide
 // `.metafile.json` is a ~500 KB esbuild by-product used only by notices.mjs —
 // it must never ship. `.json` alone would be too broad (MANIFEST.json ships).
 const EXCLUDED_FILES = /(\.map|\.log|\.DS_Store|\.zip|\.metafile\.json)$/i
+// Repository documentation that is not part of the runtime. Plugin Check warns
+// about unexpected markdown files in the plugin root, and `readme.txt` already
+// carries everything a user of the installed plugin needs.
+const EXCLUDED_NAMES = new Set(['README-zh.md'])
 
 /**
  * Copy the plugin tree into the staging directory.
@@ -87,7 +99,7 @@ async function copy(from, to, prefix = '', written = new Set()) {
       await copy(path.join(from, entry.name), path.join(to, entry.name), prefix ? `${prefix}/${entry.name}` : entry.name, written)
       continue
     }
-    if (EXCLUDED_FILES.test(entry.name)) {
+    if (EXCLUDED_FILES.test(entry.name) || EXCLUDED_NAMES.has(entry.name)) {
       continue
     }
     await fs.copyFile(path.join(from, entry.name), path.join(to, entry.name))
