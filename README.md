@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ByteMD](https://img.shields.io/badge/ByteMD-1.22.0-informational)](https://github.com/bytedance/bytemd)
 [![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A5%206.5-21759b)](https://wordpress.org/)
+[![Release](https://img.shields.io/github/v/release/zhongdaiqi/wpbytemd)](https://github.com/zhongdaiqi/wpbytemd/releases/latest)
 
 > **非官方声明**：本项目是第三方非官方集成，与字节跳动（ByteDance）及 ByteMD 项目官方**无隶属或背书关系**。"ByteMD" 为其开源项目名称，此处仅用于说明所集成的编辑器组件。
 
@@ -34,7 +35,7 @@
 
 ### 方式 A：发行包（推荐）
 
-1. 从 [Releases](../../releases) 下载 `wp-bytemd-<version>.zip`；
+1. 从 [最新 Release](https://github.com/zhongdaiqi/wpbytemd/releases/latest) 下载 `wp-bytemd-<version>.zip`；
 2. 后台 **插件 → 安装插件 → 上传插件**，选择该 zip；
 3. 启用；
 4. 打开 **设置 → ByteMD**，勾选要启用的内容类型。
