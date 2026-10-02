@@ -1,6 +1,6 @@
 {
   "name": "wp-bytemd-build",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "type": "module",
   "description": "Build pipeline that bundles ByteMD 1.22.0 into WordPress-friendly IIFE assets.",

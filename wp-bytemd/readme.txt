@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -95,6 +95,12 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
 
 == Changelog ==
+
+= 1.1.1 =
+* The release package no longer ships the build tooling in `build/`. It now contains only the files WordPress needs to run the plugin, which is what the Plugin Directory requires of a submission.
+* Build scripts, the npm lockfile and the esbuild configuration stay in the GitHub repository, where the bundled runtime can still be rebuilt from source.
+* `package.mjs` now fails the build if `build/` ever ends up back in the archive.
+* The readme points at the repository for build instructions instead of at a folder inside the plugin.
 
 = 1.1.0 =
 * Bundle KaTeX and Mermaid locally and remove every third-party CDN request.

@@ -3,7 +3,7 @@
  * Plugin Name:       WP Markdown Editor (ByteMD)
  * Plugin URI:        https://github.com/zhongdaiqi/wpbytemd
  * Description:       Markdown editing for WordPress powered by ByteMD. Split-pane editor with GFM, code highlighting, KaTeX and Mermaid, plus server- or client-side rendering of the stored Markdown.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      7.4
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WP_BYTEMD_VERSION', '1.1.0' );
+define( 'WP_BYTEMD_VERSION', '1.1.1' );
 define( 'WP_BYTEMD_BYTEMD_VERSION', '1.22.0' );
 define( 'WP_BYTEMD_FILE', __FILE__ );
 define( 'WP_BYTEMD_DIR', plugin_dir_path( __FILE__ ) );
