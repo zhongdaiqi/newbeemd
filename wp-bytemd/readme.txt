@@ -1,4 +1,4 @@
-=== WP Markdown Editor (ByteMD) ===
+=== Newbee Markdown Editor (ByteMD) ===
 Contributors: zhongdaiqi
 Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
@@ -61,7 +61,7 @@ ByteMD is an open source project by ByteDance, released under the MIT licence. T
 
 == Installation ==
 
-1. Upload the `wp-bytemd` folder to `/wp-content/plugins/`, or install the ZIP through **Plugins → Add New → Upload Plugin**.
+1. Install it from **Plugins → Add New**, or upload the ZIP through **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin.
 3. Go to **Settings → ByteMD** and select the post types you want to write in Markdown.
 4. If those post types still use the block editor, tick **Disable the block editor for the post types above** so that the classic editing screen — and therefore ByteMD — appears.
@@ -110,7 +110,7 @@ Please use this plugin's support forum, or open an issue at https://github.com/z
 * Mermaid runs with `securityLevel: strict` instead of `loose`, so HTML labels and click handlers are disabled.
 * Code highlighting, maths and diagram assets are never requested from an external server, which also makes the plugin safe on intranets and offline installs.
 * `readme.txt` is now in English and follows the WordPress.org readme standard, including the source code and build instructions.
-* The plugin display name is now "WP Markdown Editor (ByteMD)". The slug and text domain stay `wp-bytemd`.
+* The display name, text domain and permalink were aligned with the Plugin Directory naming rules.
 * The per-post Markdown flag is written only when the request carries a valid post nonce.
 * Third-party notices regenerated: 171 components, all under GPL-compatible licences (MIT 134, ISC 29, BSD-3-Clause 6, MPL-2.0-or-Apache-2.0 1, Unlicense 1).
 

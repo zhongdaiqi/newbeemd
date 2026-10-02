@@ -1,10 +1,10 @@
-# WP Markdown Editor (ByteMD)
+# Newbee Markdown Editor (ByteMD)
 
-把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。slug：`wp-bytemd`。
+把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。slug：`newbee-markdown-editor-bytemd`。
 
 > 名称说明：ByteMD v2 已改名为 HashMD，因此 `bytemd` 这条线的最新版本就是 **1.22.0**（核心包与全部官方插件同版本号）。本插件锁定并打包 1.22.0。
 >
-> 展示名取“WP Markdown Editor (ByteMD)”是为了符合 WordPress.org 指南第 17 条——插件名不宜以他人项目名开头（`WP-KaTeX` 这类 `WP-` 前缀是被允许的写法）。目录 URL（slug）与展示名相互独立，slug 保持不变。
+> 名称说明：`Newbee` 是唯一的品牌前缀，用来满足 WordPress.org 的命名要求——新插件不得在名称或永久链接中使用受限词 `wp`，也不得用他人项目名（ByteMD）开头（指南第 17 条），因此 `ByteMD` 只能放在括号里。slug 由插件名自动生成，且必须与 text domain 一致。
 
 - 插件目录：`wp-bytemd/`
 - 安装包：`dist/wp-bytemd-<version>.zip`

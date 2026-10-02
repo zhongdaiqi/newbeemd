@@ -1,33 +1,14 @@
-# Copyright (C) 2026 WP Markdown Editor (ByteMD)
+# Copyright (C) 2026 Newbee Markdown Editor (ByteMD)
 # This file is distributed under the MIT license.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Markdown Editor (ByteMD) 1.1.1\n"
+"Project-Id-Version: Newbee Markdown Editor (ByteMD) 1.1.1\n"
 "Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/wpbytemd/issues\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Domain: wp-bytemd\n"
+"X-Domain: newbee-markdown-editor-bytemd\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: assets/js/bytemd-block.js
-msgid "ByteMD Markdown"
-msgstr ""
-
-msgid "ByteMD 运行时加载失败："
-msgstr ""
-
-msgid "Markdown"
-msgstr ""
-
-msgid "使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。"
-msgstr ""
-
-msgid "写作"
-msgstr ""
-
-msgid "正在加载 ByteMD 编辑器…"
-msgstr ""
 
 #: includes/class-wp-bytemd-admin.php
 msgid "当前使用 WordPress 原生编辑器（ByteMD 已在本次编辑中关闭）。"

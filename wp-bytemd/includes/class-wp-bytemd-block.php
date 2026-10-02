@@ -36,10 +36,10 @@ class WP_ByteMD_Block {
 	public function register_block() {
 		$args = array(
 			'api_version'     => 3,
-			'title'           => __( 'ByteMD Markdown', 'wp-bytemd' ),
+			'title'           => __( 'ByteMD Markdown', 'newbee-markdown-editor-bytemd' ),
 			'category'        => 'text',
 			'icon'            => 'editor-code',
-			'description'     => __( '使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。', 'wp-bytemd' ),
+			'description'     => __( '使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。', 'newbee-markdown-editor-bytemd' ),
 			'keywords'        => array( 'markdown', 'bytemd', 'md' ),
 			'supports'        => array(
 				'html'     => false,

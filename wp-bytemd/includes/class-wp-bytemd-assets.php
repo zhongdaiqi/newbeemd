@@ -184,17 +184,17 @@ class WP_ByteMD_Assets {
 			'restEndpoint'   => esc_url_raw( rest_url( 'wp/v2/media' ) ),
 			'restNonce'      => wp_create_nonce( 'wp_rest' ),
 			'maxUploadSize'  => (int) wp_max_upload_size(),
-			'mediaTitle'     => __( '从 ByteMD 上传', 'wp-bytemd' ),
+			'mediaTitle'     => __( '从 ByteMD 上传', 'newbee-markdown-editor-bytemd' ),
 			'strings'        => array(
-				'editorLabel'  => __( 'ByteMD Markdown 编辑器', 'wp-bytemd' ),
-				'chars'        => __( '字符', 'wp-bytemd' ),
-				'switchToWp'   => __( '切换到 WordPress 编辑器', 'wp-bytemd' ),
-				'switchToMd'   => __( '切换到 ByteMD Markdown 编辑器', 'wp-bytemd' ),
-				'uploadFailed' => __( '图片上传失败', 'wp-bytemd' ),
-				'tooLarge'     => __( '文件超过服务器上传上限', 'wp-bytemd' ),
-				'notImage'     => __( '只允许上传图片', 'wp-bytemd' ),
-				'emptyValue'   => __( '（空文档）', 'wp-bytemd' ),
-				'unsavedHint'  => __( '内容已同步到 WordPress 编辑器，可正常保存 / 预览 / 自动保存。', 'wp-bytemd' ),
+				'editorLabel'  => __( 'ByteMD Markdown 编辑器', 'newbee-markdown-editor-bytemd' ),
+				'chars'        => __( '字符', 'newbee-markdown-editor-bytemd' ),
+				'switchToWp'   => __( '切换到 WordPress 编辑器', 'newbee-markdown-editor-bytemd' ),
+				'switchToMd'   => __( '切换到 ByteMD Markdown 编辑器', 'newbee-markdown-editor-bytemd' ),
+				'uploadFailed' => __( '图片上传失败', 'newbee-markdown-editor-bytemd' ),
+				'tooLarge'     => __( '文件超过服务器上传上限', 'newbee-markdown-editor-bytemd' ),
+				'notImage'     => __( '只允许上传图片', 'newbee-markdown-editor-bytemd' ),
+				'emptyValue'   => __( '（空文档）', 'newbee-markdown-editor-bytemd' ),
+				'unsavedHint'  => __( '内容已同步到 WordPress 编辑器，可正常保存 / 预览 / 自动保存。', 'newbee-markdown-editor-bytemd' ),
 			),
 		);
 	}
@@ -222,7 +222,7 @@ class WP_ByteMD_Assets {
 				'theme'   => 'default',
 			),
 			'strings'    => array(
-				'mermaidError' => __( '图表渲染失败', 'wp-bytemd' ),
+				'mermaidError' => __( '图表渲染失败', 'newbee-markdown-editor-bytemd' ),
 			),
 		);
 	}

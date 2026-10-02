@@ -1,6 +1,6 @@
 /**
  * Extract every translatable string from the PHP and JS sources and emit a
- * gettext template at `languages/wp-bytemd.pot`.
+ * gettext template at `languages/newbee-markdown-editor-bytemd.pot`.
  *
  *   node i18n.mjs
  *
@@ -14,9 +14,9 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const pluginDir = path.resolve(__dirname, '..')
-const outFile = path.join(pluginDir, 'languages', 'wp-bytemd.pot')
+const outFile = path.join(pluginDir, 'languages', 'newbee-markdown-editor-bytemd.pot')
 
-const TEXTDOMAIN = 'wp-bytemd'
+const TEXTDOMAIN = 'newbee-markdown-editor-bytemd'
 
 /** Recursively collect files with one of the given extensions. */
 async function walk(dir, extensions, skip = ['node_modules', '.git', 'vendor']) {
@@ -101,11 +101,11 @@ for (const [msgid, refs] of found) {
 const escapePo = (value) =>
   value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')
 
-const header = `# Copyright (C) 2026 WP Markdown Editor (ByteMD)
+const header = `# Copyright (C) 2026 Newbee Markdown Editor (ByteMD)
 # This file is distributed under the MIT license.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Markdown Editor (ByteMD) ${JSON.parse(await fs.readFile(path.join(pluginDir, 'build', 'package.json'), 'utf8')).version}\\n"
+"Project-Id-Version: Newbee Markdown Editor (ByteMD) ${JSON.parse(await fs.readFile(path.join(pluginDir, 'build', 'package.json'), 'utf8')).version}\\n"
 "Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/wpbytemd/issues\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"

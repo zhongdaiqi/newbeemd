@@ -1,6 +1,6 @@
-# WP Markdown Editor (ByteMD)
+# Newbee Markdown Editor (ByteMD)
 
-把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件（slug：`wp-bytemd`）。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
+把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件（slug：`newbee-markdown-editor-bytemd`）。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ByteMD](https://img.shields.io/badge/ByteMD-1.22.0-informational)](https://github.com/bytedance/bytemd)

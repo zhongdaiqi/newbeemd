@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       WP Markdown Editor (ByteMD)
+ * Plugin Name:       Newbee Markdown Editor (ByteMD)
  * Plugin URI:        https://github.com/zhongdaiqi/wpbytemd
  * Description:       Markdown editing for WordPress powered by ByteMD. Split-pane editor with GFM, code highlighting, KaTeX and Mermaid, plus server- or client-side rendering of the stored Markdown.
  * Version:           1.1.1
@@ -11,7 +11,7 @@
  * Author URI:        https://github.com/zhongdaiqi
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
- * Text Domain:       wp-bytemd
+ * Text Domain:       newbee-markdown-editor-bytemd
  * Domain Path:       /languages
  *
  * @package WP_ByteMD

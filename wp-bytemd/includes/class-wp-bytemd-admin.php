@@ -345,7 +345,7 @@ class WP_ByteMD_Admin {
 		if ( WP_ByteMD_Options::is_on( 'classic_takeover' ) && ! WP_ByteMD_Assets::vendor_available() ) {
 			printf(
 				'<div class="notice notice-error"><p><strong>ByteMD：</strong>%s</p><p><code>cd %s && npm install && npm run build</code></p></div>',
-				esc_html__( '未找到打包好的 ByteMD 运行时资源（assets/vendor/bytemd-editor.js）。请在插件目录执行构建，或从发行包中重新安装。', 'wp-bytemd' ),
+				esc_html__( '未找到打包好的 ByteMD 运行时资源（assets/vendor/bytemd-editor.js）。请在插件目录执行构建，或从发行包中重新安装。', 'newbee-markdown-editor-bytemd' ),
 				esc_html( 'wp-content/plugins/' . dirname( WP_BYTEMD_BASENAME ) . '/build' )
 			);
 			return;
@@ -355,9 +355,9 @@ class WP_ByteMD_Admin {
 			$url = remove_query_arg( 'bytemd' );
 			printf(
 				'<div class="notice notice-info is-dismissible"><p>%s <a href="%s" class="button button-small">%s</a></p></div>',
-				esc_html__( '当前使用 WordPress 原生编辑器（ByteMD 已在本次编辑中关闭）。', 'wp-bytemd' ),
+				esc_html__( '当前使用 WordPress 原生编辑器（ByteMD 已在本次编辑中关闭）。', 'newbee-markdown-editor-bytemd' ),
 				esc_url( $url ),
-				esc_html__( '重新启用 ByteMD', 'wp-bytemd' )
+				esc_html__( '重新启用 ByteMD', 'newbee-markdown-editor-bytemd' )
 			);
 		}
 	}

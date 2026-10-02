@@ -36,14 +36,14 @@ class WP_ByteMD_Options {
 	 */
 	public static function available_plugins() {
 		return array(
-			'gfm'         => __( 'GFM（表格 / 任务列表 / 删除线 / 自动链接）', 'wp-bytemd' ),
-			'highlight'   => __( '代码高亮（highlight.js）', 'wp-bytemd' ),
-			'math'        => __( '数学公式（KaTeX，$…$ 与 $$…$$）', 'wp-bytemd' ),
-			'breaks'      => __( '回车换行（GitHub 风格软换行）', 'wp-bytemd' ),
-			'gemoji'      => __( 'Emoji 短代码（:smile:）', 'wp-bytemd' ),
-			'mediumZoom'  => __( '图片缩放（medium-zoom，点击放大）', 'wp-bytemd' ),
-			'mermaid'     => __( 'Mermaid 图表（随插件打包，仅在含图表的页面加载）', 'wp-bytemd' ),
-			'frontmatter' => __( 'Front matter（YAML 头部，仅解析不显示）', 'wp-bytemd' ),
+			'gfm'         => __( 'GFM（表格 / 任务列表 / 删除线 / 自动链接）', 'newbee-markdown-editor-bytemd' ),
+			'highlight'   => __( '代码高亮（highlight.js）', 'newbee-markdown-editor-bytemd' ),
+			'math'        => __( '数学公式（KaTeX，$…$ 与 $$…$$）', 'newbee-markdown-editor-bytemd' ),
+			'breaks'      => __( '回车换行（GitHub 风格软换行）', 'newbee-markdown-editor-bytemd' ),
+			'gemoji'      => __( 'Emoji 短代码（:smile:）', 'newbee-markdown-editor-bytemd' ),
+			'mediumZoom'  => __( '图片缩放（medium-zoom，点击放大）', 'newbee-markdown-editor-bytemd' ),
+			'mermaid'     => __( 'Mermaid 图表（随插件打包，仅在含图表的页面加载）', 'newbee-markdown-editor-bytemd' ),
+			'frontmatter' => __( 'Front matter（YAML 头部，仅解析不显示）', 'newbee-markdown-editor-bytemd' ),
 		);
 	}
 

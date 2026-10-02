@@ -73,7 +73,7 @@ final class WP_ByteMD {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'wp-bytemd', false, dirname( WP_BYTEMD_BASENAME ) . '/languages' );
+		load_plugin_textdomain( 'newbee-markdown-editor-bytemd', false, dirname( WP_BYTEMD_BASENAME ) . '/languages' );
 	}
 
 	/**
@@ -122,7 +122,7 @@ final class WP_ByteMD {
 		$url = admin_url( 'options-general.php?page=wp-bytemd' );
 		array_unshift(
 			$links,
-			sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( '设置', 'wp-bytemd' ) )
+			sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( '设置', 'newbee-markdown-editor-bytemd' ) )
 		);
 		return $links;
 	}
