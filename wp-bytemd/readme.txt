@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -92,6 +92,18 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
 
 == Changelog ==
+
+= 1.1.0 =
+* Bundle KaTeX and Mermaid locally and remove every third-party CDN request.
+* WordPress.org guideline 8 requires all non-service related JavaScript and CSS to be included locally, and guideline 7 forbids offloading assets to a third party. KaTeX and Mermaid used to be fetched from jsDelivr at runtime, which broke both.
+* KaTeX and Mermaid now ship inside the plugin as their own files and are loaded only on pages that actually use them.
+* The CDN override settings (`cdn_base`, `katex_version`, `mermaid_version`) are gone, and stale values are removed the next time settings are saved.
+* Mermaid runs with `securityLevel: strict` instead of `loose`, so HTML labels and click handlers are disabled.
+* Code highlighting, maths and diagram assets are never requested from an external server, which also makes the plugin safe on intranets and offline installs.
+* `readme.txt` is now in English and follows the WordPress.org readme standard, including the source code and build instructions.
+* The plugin display name is now "WP Markdown Editor (ByteMD)". The slug and text domain stay `wp-bytemd`.
+* The per-post Markdown flag is written only when the request carries a valid post nonce.
+* Third-party notices regenerated: 171 components, all under GPL-compatible licences (MIT 134, ISC 29, BSD-3-Clause 6, MPL-2.0-or-Apache-2.0 1, Unlicense 1).
 
 = 1.0.1 =
 * Fixed the release archive: entry names used a backslash as the path separator, which made WordPress extract no plugin folder at all and report "Plugin file does not exist" on activation.

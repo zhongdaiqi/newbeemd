@@ -2,7 +2,7 @@
 # This file is distributed under the MIT license.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Markdown Editor (ByteMD) 1.0.1\n"
+"Project-Id-Version: WP Markdown Editor (ByteMD) 1.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/wpbytemd/issues\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

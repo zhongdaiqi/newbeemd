@@ -17,7 +17,7 @@ import {
 } from './shared.js'
 
 const WPByteMD = {
-  version: '1.0.1',
+  version: '1.1.0',
   bytemdVersion: '1.22.0',
   Editor,
   pluginFactories,
