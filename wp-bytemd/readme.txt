@@ -46,11 +46,14 @@ This plugin never contacts an external server. The editor, highlight.js, KaTeX a
 
 Development happens on GitHub: https://github.com/zhongdaiqi/wpbytemd
 
-The plugin ships with its own build tooling in `build/`. To rebuild the bundled runtime from source:
+The files in `assets/vendor/` are compiled from that repository. To rebuild them from source:
 
-    cd wp-content/plugins/wp-bytemd/build
+    git clone https://github.com/zhongdaiqi/wpbytemd
+    cd wpbytemd/wp-bytemd/build
     npm install
     npm run build
+
+The build tooling is not part of the plugin archive, because none of it is needed to run the plugin.
 
 **Credits and licence**
 

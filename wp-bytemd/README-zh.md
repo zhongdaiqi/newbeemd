@@ -40,7 +40,7 @@ WordPress 7.1 的编辑体系有两个关键事实：
 
 ### 方式 A：装发行包（推荐）
 
-`dist/wp-bytemd-1.0.1.zip` 已包含编译好的 `assets/vendor/`，服务器上不需要 Node：
+`dist/wp-bytemd-<version>.zip` 已包含编译好的 `assets/vendor/`，服务器上不需要 Node：
 
 1. 后台「插件 → 安装插件 → 上传插件」，选择该 zip。
 2. 启用。

@@ -3,9 +3,13 @@
  *
  *   node package.mjs
  *
- * The archive contains everything WordPress needs to run the plugin —
- * including the pre-built `assets/vendor/*` — but never `node_modules`.
- * `build/` is kept so the bundle can be rebuilt on the target machine.
+ * The archive contains exactly what WordPress needs to run the plugin,
+ * including the pre-built `assets/vendor/*`.
+ *
+ * `build/` and `node_modules/` are deliberately left out. The Plugin Directory
+ * requires a submission to be production-ready and free of development
+ * tooling, and no site needs esbuild to run the plugin. The build scripts stay
+ * in the repository, where the bundled runtime can be rebuilt from source.
  */
 
 import fs from 'node:fs/promises'
@@ -60,7 +64,7 @@ if (!readme.includes(`= ${version} =`)) {
 }
 
 /** Paths (relative to the plugin root) that never belong in the archive. */
-const EXCLUDED_DIRS = new Set(['node_modules', '.git', '.github', '.idea', '.vscode', 'dist'])
+const EXCLUDED_DIRS = new Set(['node_modules', 'build', '.git', '.github', '.idea', '.vscode', 'dist'])
 // `.metafile.json` is a ~500 KB esbuild by-product used only by notices.mjs —
 // it must never ship. `.json` alone would be too broad (MANIFEST.json ships).
 const EXCLUDED_FILES = /(\.map|\.log|\.DS_Store|\.zip|\.metafile\.json)$/i
@@ -406,6 +410,16 @@ const stray = zipFiles.filter((f) => !f.rel.startsWith('wp-bytemd/'))
 if (stray.length) {
   console.error('打包失败：以下条目位于 wp-bytemd/ 之外：')
   stray.slice(0, 5).forEach((f) => console.error(`  ${f.rel}`))
+  process.exit(1)
+}
+
+// Regression guard: `build/` must never find its way back in. Letting it slip
+// is not a style question — the Plugin Directory rejects submissions that
+// carry development tooling.
+const devTooling = zipFiles.filter((f) => f.rel.startsWith('wp-bytemd/build/'))
+if (devTooling.length) {
+  console.error('打包失败：开发工具混入了发布包：')
+  devTooling.slice(0, 5).forEach((f) => console.error(`  ${f.rel}`))
   process.exit(1)
 }
 
