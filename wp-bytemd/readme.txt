@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -95,6 +95,12 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
 
 == Changelog ==
+
+= 1.2.1 =
+* 修掉 WordPress.org 自动预检拦下的一条 ERROR，并减少一条告警。
+* **ERROR `plugin_header_tested_up_to_not_allowed`**：`wp-bytemd.php` 头部同时声明了 `Tested up to: 7.1`。Plugin Directory 要求该字段**只写在 `readme.txt`**——两处并存会在后续版本里静默失去同步。已从插件头部删除，readme 保留；打包脚本新增断言，头部一旦再出现该字段就直接打包失败。
+* 发行包不再包含 `README-zh.md`（Plugin Check 告警 `unexpected_markdown_file`）。它是仓库文档，插件运行不需要，面向上层用户的说明以 `readme.txt` 为准。
+* `THIRD-PARTY-NOTICES.md` **保留**：内置组件的 MIT / ISC / BSD 许可证要求版权声明随软件一并分发，该文件正是履行这项义务的载体，属于 Plugin Check 的误报。
 
 = 1.2.0 =
 * 为提交 WordPress.org 插件目录做了一次改名。
