@@ -117,12 +117,14 @@ async function sizeOf(dir) {
 /* --- stage ------------------------------------------------------------- */
 
 // Start from a clean staging directory. Some sandboxed environments refuse
-// bulk recursive deletes; that is not fatal, because the reconciliation step
-// below removes whatever `copy()` did not write.
+// bulk recursive deletes — they count every entry inside the tree, so a
+// recursive `rm` of the stage can exceed the limit. That is survivable,
+// because the reconciliation step below removes whatever `copy()` did not
+// write; it just has to be reported rather than swallowed.
 try {
   await fs.rm(stageRoot, { recursive: true, force: true })
 } catch (err) {
-  console.warn(`提示：暂存目录未能清空（${err.code || err.message}），改为就地覆盖。`)
+  console.warn(`提示：暂存目录未能整体清空（${err.code || err.message}），改为逐文件对账。`)
 }
 
 const written = await copy(pluginDir, stagePlugin)
@@ -137,9 +139,25 @@ const written = await copy(pluginDir, stagePlugin)
 // covers both cases — deleted files and newly excluded ones.
 const stale = (await collectFiles(stagePlugin)).filter((f) => !written.has(f.rel))
 
+const staleFailures = []
+
 for (const file of stale) {
-  // Per-file deletes stay well under any bulk-delete guard.
-  await fs.rm(file.full, { force: true })
+  // Per-file deletes stay well under any bulk-delete guard — but a guard can
+  // still refuse, and a leftover here would ship silently. Collect the
+  // failures and stop, rather than letting the exception escape as a stack
+  // trace halfway through a release.
+  try {
+    await fs.rm(file.full, { force: true })
+  } catch {
+    staleFailures.push(file.rel)
+  }
+}
+
+if (staleFailures.length) {
+  console.error(`\n打包失败：暂存目录里有 ${staleFailures.length} 个上一轮的残留文件删不掉，继续打包会把它们带进发布包。`)
+  staleFailures.slice(0, 5).forEach((f) => console.error(`  ${f}`))
+  console.error('先清空暂存目录再重跑，例如：git clean -fdx dist/.stage\n')
+  process.exit(1)
 }
 
 if (stale.length) {
