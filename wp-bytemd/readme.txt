@@ -62,5 +62,12 @@ Markdown 原文保存在 `post_content` 中，发布时按设置转成 HTML：
 
 == Changelog ==
 
+= 1.0.1 =
+* 修复：发行包 zip 的条目名使用了反斜杠作为路径分隔符，导致 WordPress 解压后生不出插件目录、启用时报「插件文件不存在」。
+* 打包流程改为纯 Node 实现，不再依赖外部压缩工具；打包后回读压缩包逐条校验 CRC 与条目名。
+* 新增 `THIRD-PARTY-NOTICES.md`（115 个第三方组件的许可声明）；补齐 Parsedown / ParsedownExtra 的 LICENSE 文件。
+* `Plugin URI` 指向本插件仓库，并声明为非官方集成。
+* 不再把构建中间产物（esbuild metafile）打进发行包，压缩包体积由约 1.5 MB 降至 0.98 MB。
+
 = 1.0.0 =
 * 首个版本：ByteMD 1.22.0、经典界面接管、区块、服务端/浏览器渲染、图片直传、KaTeX、Mermaid、短代码。

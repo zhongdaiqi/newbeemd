@@ -3,7 +3,7 @@
  * Plugin Name:       ByteMD for WordPress
  * Plugin URI:        https://github.com/zhongdaiqi/wpbytemd
  * Description:       将字节跳动开源的 ByteMD Markdown 编辑器集成进 WordPress：经典编辑界面接管、区块编辑器区块、Markdown 存储与前端渲染、图片直传媒体库。
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      7.4

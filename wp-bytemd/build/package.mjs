@@ -23,6 +23,42 @@ const pkg = JSON.parse(await fs.readFile(path.join(__dirname, 'package.json'), '
 const version = pkg.version
 const zipPath = path.join(repoRoot, 'dist', `wp-bytemd-${version}.zip`)
 
+/* --- version consistency -------------------------------------------------
+ * WordPress reads the plugin's version from the `Version:` header in the main
+ * plugin file, not from WP_BYTEMD_VERSION. Bumping one and forgetting the
+ * other ships a plugin that reports the wrong version (and never sees an
+ * update). Assert every declaration agrees before building the archive.
+ */
+
+const mainFile = await fs.readFile(path.join(pluginDir, 'wp-bytemd.php'), 'utf8')
+const readme = await fs.readFile(path.join(pluginDir, 'readme.txt'), 'utf8')
+const editorSrc = await fs.readFile(path.join(__dirname, 'src', 'editor.js'), 'utf8')
+
+const declarations = [
+  ['build/package.json', pkg.version],
+  ['wp-bytemd.php (Version: header)', (mainFile.match(/^\s*\*\s*Version:\s*(\S+)/m) || [])[1]],
+  ["wp-bytemd.php (WP_BYTEMD_VERSION)", (mainFile.match(/WP_BYTEMD_VERSION',\s*'([^']+)'/) || [])[1]],
+  ['readme.txt (Stable tag)', (readme.match(/^Stable tag:\s*(\S+)/m) || [])[1]],
+  ['build/src/editor.js', (editorSrc.match(/version:\s*'([^']+)'/) || [])[1]],
+]
+
+const mismatched = declarations.filter(([, v]) => v !== version)
+
+if (mismatched.length) {
+  console.error(`打包失败：版本号不一致（期望 ${version}）：`)
+  mismatched.forEach(([where, got]) => console.error(`  ${where.padEnd(34)} ${got ?? '(未找到)'}`))
+  process.exit(1)
+}
+
+console.log(`版本一致性检查通过：${version}（${declarations.length} 处声明）`)
+
+// The readme changelog drives the WordPress.org "Changelog" tab; a missing
+// entry silently drops the release notes for this version.
+if (!readme.includes(`= ${version} =`)) {
+  console.error(`打包失败：readme.txt 的 Changelog 缺少 "= ${version} =" 条目。`)
+  process.exit(1)
+}
+
 /** Paths (relative to the plugin root) that never belong in the archive. */
 const EXCLUDED_DIRS = new Set(['node_modules', '.git', '.github', '.idea', '.vscode', 'dist'])
 // `.metafile.json` is a ~500 KB esbuild by-product used only by notices.mjs —
@@ -373,7 +409,8 @@ if (stray.length) {
   process.exit(1)
 }
 
-await fs.rm(zipPath, { force: true })
+// `writeZip` opens with `fs.writeFile`, which truncates — no need to unlink
+// first (and an unlink would trip the sandbox's bulk-delete guard).
 await writeZip(zipFiles, zipPath)
 await verifyArchive(zipPath)
 
