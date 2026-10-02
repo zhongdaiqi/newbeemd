@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -95,6 +95,18 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
 
 == Changelog ==
+
+= 1.2.0 =
+* 为提交 WordPress.org 插件目录做了一次改名。
+* 展示名：`WP Markdown Editor (ByteMD)` → **`Newbee Markdown Editor (ByteMD)`**
+* text domain 与 slug：`wp-bytemd` → `newbee-markdown-editor-bytemd`
+* 起因是 wp.org 的名称校验直接拒绝了原名称：**新提交的插件不得在显示名或永久链接中使用受限词 `wp`**（`wp-*` 这类老插件属于历史遗留，不适用于新提交）。同时 wp.org 强制要求 text domain 必须等于 slug，而 slug 由插件名自动生成，因此 96 处 `__( ..., 'wp-bytemd' )` 全部随之更新。
+* `Newbee` 作为唯一品牌前缀，既避开受限词，也满足「名称不得只由通用词构成」的要求；`ByteMD` 放在括号里位于名称末尾，不触发指南第 17 条「不得以他人项目名开头」。
+* 未改动：插件目录名 `wp-bytemd/`、主文件 `wp-bytemd.php`、`WP_ByteMD_*` 类与 `WP_BYTEMD_*` 常量、发行包文件名 `dist/wp-bytemd-<version>.zip` —— 这些是代码标识与打包路径，不是展示名，也不影响 wp.org 的安装路径（wp.org 一律装进 `<slug>/`）。
+* 其他：
+* 翻译模板重建为 `languages/newbee-markdown-editor-bytemd.pot`（96 条）
+* 第三方声明重新生成，组件清单不变（仍为 171 个，许可证全部 GPL 兼容）
+* readme 安装说明改为不依赖具体目录名
 
 = 1.1.1 =
 * The release package no longer ships the build tooling in `build/`. It now contains only the files WordPress needs to run the plugin, which is what the Plugin Directory requires of a submission.
