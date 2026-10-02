@@ -250,7 +250,10 @@ console.log('\n[5/5] 创建 GitHub Release')
 const remote = sh('git', ['remote', 'get-url', 'origin'])
 const match = remote.match(/github\.com[/:]([^/]+)\/(.+?)(?:\.git)?$/)
 if (!match) die(`无法从 origin 解析出 GitHub 仓库：${remote}`)
-const [, owner, repo] = match
+// 仓库可能被改名：旧路径仍会返回 301，但 `fetch` 只对 GET 自动跟随重定向，
+// 带 body 的 POST（创建 Release、上传附件）会拿到 307 并失败。
+// 所以先解析出规范仓库名，后续所有 API 调用都用它。
+const [, ownerRaw, repoRaw] = match
 
 const credential = execFileSync('git', ['credential', 'fill'], {
   input: 'protocol=https\nhost=github.com\n\n',
@@ -285,7 +288,23 @@ async function api(url, options = {}) {
   return { res, json }
 }
 
-const body = `## wp-bytemd ${next}
+const canonical = await api(`https://api.github.com/repos/${ownerRaw}/${repoRaw}`)
+if (!canonical.res.ok) {
+  console.error(`  解析仓库失败：HTTP ${canonical.res.status}`)
+  console.error(typeof canonical.json === 'string' ? canonical.json : JSON.stringify(canonical.json, null, 2))
+  die('无法确定 GitHub 仓库的规范地址。')
+}
+const [owner, repo] = canonical.json.full_name.split('/')
+if (`${owner}/${repo}`.toLowerCase() !== `${ownerRaw}/${repoRaw}`.toLowerCase()) {
+  console.log(`  提示：仓库已改名 ${ownerRaw}/${repoRaw} → ${owner}/${repo}，按新地址调用 API。`)
+}
+
+// Release 标题用插件头里的显示名，改名后不用再改脚本。
+const displayName =
+  ((await fs.readFile(MAIN_PHP, 'utf8')).match(/^\s*\*\s*Plugin Name:\s*(.+?)\s*$/m) || [])[1] ||
+  'wp-bytemd'
+
+const body = `## ${displayName} ${next}
 
 ### 安装
 
@@ -306,7 +325,7 @@ ${notes}
 let { res, json } = await api(`https://api.github.com/repos/${owner}/${repo}/releases`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ tag_name: tag, name: `wp-bytemd ${next}`, body, draft: false, prerelease: false }),
+  body: JSON.stringify({ tag_name: tag, name: `${displayName} ${next}`, body, draft: false, prerelease: false }),
 })
 
 if (res.status === 422 && JSON.stringify(json).includes('already_exists')) {
