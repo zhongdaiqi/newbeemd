@@ -21,7 +21,6 @@ class WP_ByteMD_Frontend {
 		add_filter( 'the_content', array( $this, 'filter_the_content' ), 9 );
 		add_filter( 'the_content_feed', array( $this, 'filter_the_content' ), 9 );
 		add_filter( 'get_the_excerpt', array( $this, 'filter_excerpt' ), 9, 2 );
-		add_action( 'wp_footer', array( $this, 'late_styles' ), 1 );
 
 		if ( WP_ByteMD_Options::is_on( 'enable_shortcode' ) ) {
 			add_shortcode( 'bytemd', array( $this, 'shortcode' ) );
@@ -193,37 +192,5 @@ class WP_ByteMD_Frontend {
 		}
 
 		return WP_ByteMD_Markdown::render( $content, $args );
-	}
-
-	/**
-	 * Late safety net: if client rendering was requested after `wp_head` ran,
-	 * print the stylesheet from the footer.
-	 *
-	 * @return void
-	 */
-	public function late_styles() {
-		foreach ( array( WP_ByteMD_Assets::HANDLE_CONTENT_CSS, WP_ByteMD_Assets::HANDLE_VENDOR_VIEWER . '-css' ) as $handle ) {
-			if ( ! wp_style_is( $handle, 'registered' ) ) {
-				continue;
-			}
-
-			if ( wp_style_is( $handle, 'enqueued' ) && ! wp_style_is( $handle, 'done' ) ) {
-				$src = wp_styles()->registered[ $handle ]->src;
-
-				if ( ! $src ) {
-					continue;
-				}
-
-				if ( wp_styles()->registered[ $handle ]->ver ) {
-					$src = add_query_arg( 'ver', wp_styles()->registered[ $handle ]->ver, $src );
-				}
-
-				printf(
-					'<link rel="stylesheet" id="%s-late-css" href="%s" media="all" />' . "\n",
-					esc_attr( $handle ),
-					esc_url( $src )
-				);
-			}
-		}
 	}
 }

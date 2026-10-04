@@ -42,7 +42,6 @@ final class WP_ByteMD {
 	 * Constructor: register hooks.
 	 */
 	private function __construct() {
-		add_action( 'init', array( $this, 'load_textdomain' ), 1 );
 		add_action( 'init', array( $this, 'init_modules' ), 5 );
 
 		$this->modules['assets']   = new WP_ByteMD_Assets();
@@ -65,15 +64,6 @@ final class WP_ByteMD {
 	 */
 	public function module( $name ) {
 		return isset( $this->modules[ $name ] ) ? $this->modules[ $name ] : null;
-	}
-
-	/**
-	 * Load translations.
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'newbee-markdown-editor-bytemd', false, dirname( WP_BYTEMD_BASENAME ) . '/languages' );
 	}
 
 	/**
@@ -119,10 +109,10 @@ final class WP_ByteMD {
 	 * @return array
 	 */
 	public function action_links( $links ) {
-		$url = admin_url( 'options-general.php?page=wp-bytemd' );
+		$url = admin_url( 'options-general.php?page=' . WP_ByteMD_Settings::PAGE );
 		array_unshift(
 			$links,
-			sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( '设置', 'newbee-markdown-editor-bytemd' ) )
+			sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( '设置', 'newbee-markdown-editor' ) )
 		);
 		return $links;
 	}

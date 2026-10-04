@@ -1,6 +1,6 @@
-# Newbee Markdown Editor (ByteMD)
+# Newbee Markdown Editor
 
-把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。slug：`newbee-markdown-editor-bytemd`。
+把 **ByteMD**（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）集成到 **WordPress 7.1.2** 的完整插件。slug：`newbee-markdown-editor`。
 
 > 名称说明：ByteMD v2 已改名为 HashMD，因此 `bytemd` 这条线的最新版本就是 **1.22.0**（核心包与全部官方插件同版本号）。本插件锁定并打包 1.22.0。
 >
@@ -44,7 +44,7 @@ WordPress 7.1 的编辑体系有两个关键事实：
 
 1. 后台「插件 → 安装插件 → 上传插件」，选择该 zip。
 2. 启用。
-3. 打开「设置 → ByteMD」，勾选要启用的内容类型。
+3. 打开「设置 → Newbee Markdown」，勾选要启用的内容类型。
 
 ### 方式 B：源码安装
 
@@ -52,7 +52,7 @@ WordPress 7.1 的编辑体系有两个关键事实：
 cd wp-content/plugins/wp-bytemd/build
 npm install          # 安装 bytemd 1.22.0 + 各官方插件 + esbuild
 npm run build        # 产出 ../assets/vendor/*
-node i18n.mjs        # 可选：重新生成 languages/wp-bytemd.pot
+node i18n.mjs        # 可选：重新生成 languages/newbee-markdown-editor.pot
 ```
 
 ---
@@ -142,7 +142,7 @@ wp-bytemd/
 │   └── vendor/                     ← npm run build 产出
 ├── build/                          esbuild 构建工程（发布包中不含 node_modules）
 ├── vendor/parsedown/               Parsedown + ParsedownExtra（MIT）
-├── languages/wp-bytemd.pot         100 条可翻译字符串
+├── languages/newbee-markdown-editor.pot   可翻译字符串
 └── uninstall.php
 ```
 
@@ -214,7 +214,7 @@ JS 侧：经典界面挂载完成后在 `document` 上派发 `wp-bytemd:ready`�
 ## 8. 常见问题
 
 **Q：启用了但经典界面没出现 ByteMD？**
-A：该内容类型还在用区块编辑器。到「设置 → ByteMD」勾上「对上述内容类型禁用区块编辑器」，或装 Classic Editor 插件。
+A：该内容类型还在用区块编辑器。到「设置 → Newbee Markdown」勾上「对上述内容类型禁用区块编辑器」，或装 Classic Editor 插件。
 
 **Q：`assets/vendor/bytemd-editor.js` 不存在？**
 A：源码安装没执行构建。设置页顶部的「运行状态」会直接标红提示，并在编辑页给出报错通知。

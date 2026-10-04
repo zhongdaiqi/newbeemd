@@ -1,11 +1,11 @@
-# Newbee Markdown Editor (ByteMD)
+# Newbee Markdown Editor
 
-把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件（slug：`newbee-markdown-editor-bytemd`）。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
+把 [ByteMD](https://github.com/bytedance/bytemd)（字节跳动开源的 Markdown 编辑器，最新版 **1.22.0**）完整集成进 **WordPress** 的插件（slug：`newbee-markdown-editor`）。既有经典编辑界面接管，也提供 `bytemd/editor` 区块；Markdown 存库，前端可服务端渲染。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ByteMD](https://img.shields.io/badge/ByteMD-1.22.0-informational)](https://github.com/bytedance/bytemd)
 [![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A5%206.5-21759b)](https://wordpress.org/)
-[![Release](https://img.shields.io/github/v/release/zhongdaiqi/wpbytemd)](https://github.com/zhongdaiqi/wpbytemd/releases/latest)
+[![Release](https://img.shields.io/github/v/release/zhongdaiqi/newbeemd)](https://github.com/zhongdaiqi/newbeemd/releases/latest)
 
 > **非官方声明**：本项目是第三方非官方集成，与字节跳动（ByteDance）及 ByteMD 项目官方**无隶属或背书关系**。"ByteMD" 为其开源项目名称，此处仅用于说明所集成的编辑器组件。
 
@@ -19,7 +19,7 @@
 - **图片拖拽粘贴直传媒体库** —— 走 REST 接口，复用 WordPress 的权限与类型校验。
 - **不误伤老文章** —— 只有带 `_wp_bytemd_markdown` 标记的文章才按 Markdown 渲染，旧 HTML 文章编辑时该选项默认不选。
 - **零外部请求** —— ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，运行时不联系任何第三方服务器（含字体）。KaTeX 与 Mermaid 只在页面上真的出现公式/图表时才加载。
-- 完整 i18n（`wp-bytemd.pot`）、7 个扩展钩子、简体中文文档。
+- 完整 i18n（`newbee-markdown-editor.pot`）、7 个扩展钩子、简体中文文档。
 
 ## 环境要求
 
@@ -35,10 +35,10 @@
 
 ### 方式 A：发行包（推荐）
 
-1. 从 [最新 Release](https://github.com/zhongdaiqi/wpbytemd/releases/latest) 下载 `wp-bytemd-<version>.zip`；
+1. 从 [最新 Release](https://github.com/zhongdaiqi/newbeemd/releases/latest) 下载 `wp-bytemd-<version>.zip`；
 2. 后台 **插件 → 安装插件 → 上传插件**，选择该 zip；
 3. 启用；
-4. 打开 **设置 → ByteMD**，勾选要启用的内容类型。
+4. 打开 **设置 → Newbee Markdown**，勾选要启用的内容类型。
 
 ### 方式 B：源码
 
@@ -70,7 +70,7 @@ cd wp-bytemd/build
 npm install
 
 node build.mjs        # esbuild 双 entry 打包 → ../assets/vendor（含字体瘦身）
-node i18n.mjs         # 生成 languages/wp-bytemd.pot
+node i18n.mjs         # 生成 languages/newbee-markdown-editor.pot
 node lint-php.mjs     # PHP 语法检查（需 npm i --no-save php-parser）
 node notices.mjs      # 生成 THIRD-PARTY-NOTICES.md
 node package.mjs      # 打包 dist/wp-bytemd-<version>.zip（自带结构校验）
@@ -108,13 +108,13 @@ node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文
 
 ```
 .
-├── wp-bytemd/                  插件本体（发布包根目录名必须叫 wp-bytemd）
+├── wp-bytemd/                  插件本体（发行包内目录名仍是 wp-bytemd，代码标识不随展示名变化）
 │   ├── includes/               8 个 PHP 类，WP_ByteMD_*
 │   ├── assets/js|css/          手写脚本与样式
 │   ├── assets/vendor/          esbuild 产物（已入库，勿手改）
 │   ├── build/                  esbuild 构建工程
 │   ├── vendor/parsedown/       Parsedown + ParsedownExtra（服务端渲染）
-│   ├── languages/              wp-bytemd.pot
+│   ├── languages/              newbee-markdown-editor.pot
 │   └── THIRD-PARTY-NOTICES.md  第三方组件声明（自动生成）
 ├── dist/                       打包输出（不入库，见 Releases）
 ├── demo.html                   效果演示页

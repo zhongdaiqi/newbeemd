@@ -173,11 +173,10 @@ class WP_ByteMD_Markdown {
 		wp_enqueue_script( WP_ByteMD_Assets::HANDLE_FRONTEND );
 		wp_enqueue_style( WP_ByteMD_Assets::HANDLE_CONTENT_CSS );
 
-		if ( ! wp_script_is( WP_ByteMD_Assets::HANDLE_FRONTEND, 'registered' ) ) {
-			// Defensive: the handle is registered on `init`, this should never
-			// trigger, but a broken third-party plugin could deregister it.
-			WP_ByteMD_Assets::print_config( 'wpByteMDViewer', WP_ByteMD_Assets::frontend_config() );
-		}
+		// The viewer configuration reaches the page through
+		// `wp_localize_script()` in WP_ByteMD_Frontend::enqueue(). Nothing is
+		// printed here: if the script handle is not registered then the script
+		// itself is never output either, so there would be nothing to configure.
 
 		return sprintf(
 			'<div class="wp-bytemd-viewer-host" data-bytemd-viewer="1" data-bytemd-payload="%s"></div>',

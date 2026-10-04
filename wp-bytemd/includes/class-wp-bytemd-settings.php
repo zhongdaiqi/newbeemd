@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class WP_ByteMD_Settings {
 
-	const PAGE       = 'newbee-markdown-editor-bytemd';
+	const PAGE       = 'newbee-markdown-editor';
 	const GROUP      = 'wp_bytemd_group';
 	const CAPABILITY = 'manage_options';
 
@@ -31,8 +31,8 @@ class WP_ByteMD_Settings {
 	 */
 	public function add_menu() {
 		add_options_page(
-			__( 'ByteMD 设置', 'newbee-markdown-editor-bytemd' ),
-			__( 'ByteMD', 'newbee-markdown-editor-bytemd' ),
+			__( 'Newbee Markdown 设置', 'newbee-markdown-editor' ),
+			__( 'Newbee Markdown', 'newbee-markdown-editor' ),
 			self::CAPABILITY,
 			self::PAGE,
 			array( $this, 'render_page' )
@@ -49,73 +49,73 @@ class WP_ByteMD_Settings {
 
 		return array(
 			'general'  => array(
-				'title'  => __( '基本设置', 'newbee-markdown-editor-bytemd' ),
-				'intro'  => __( '选择哪些内容类型使用 ByteMD，以及是否接管经典编辑界面。', 'newbee-markdown-editor-bytemd' ),
+				'title'  => __( '基本设置', 'newbee-markdown-editor' ),
+				'intro'  => __( '选择哪些内容类型使用 ByteMD，以及是否接管经典编辑界面。', 'newbee-markdown-editor' ),
 				'fields' => array(
 					array(
 						'id'    => 'post_types',
 						'type'  => 'post_types',
-						'title' => __( '启用的内容类型', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '只有勾选的内容类型才会加载 ByteMD。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '启用的内容类型', 'newbee-markdown-editor' ),
+						'desc'  => __( '只有勾选的内容类型才会加载 ByteMD。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'classic_takeover',
 						'type'  => 'checkbox',
-						'title' => __( '接管经典编辑界面', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '在经典编辑界面（非区块编辑器）用 ByteMD 替换默认内容编辑器。作者可随时一键切回 WordPress 编辑器。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '接管经典编辑界面', 'newbee-markdown-editor' ),
+						'desc'  => __( '在经典编辑界面（非区块编辑器）用 ByteMD 替换默认内容编辑器。作者可随时一键切回 WordPress 编辑器。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'force_classic',
 						'type'  => 'checkbox',
-						'title' => __( '对上述内容类型禁用区块编辑器', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '开启后，勾选的内容类型会强制走经典编辑界面（等价于 Classic Editor 插件对该类型的效果），ByteMD 才能生效。WordPress 7.1 起 Classic 区块已从区块插入器中移除，这是让 ByteMD 完整取代编辑器的推荐做法。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '对上述内容类型禁用区块编辑器', 'newbee-markdown-editor' ),
+						'desc'  => __( '开启后，勾选的内容类型会强制走经典编辑界面（等价于 Classic Editor 插件对该类型的效果），ByteMD 才能生效。WordPress 7.1 起 Classic 区块已从区块插入器中移除，这是让 ByteMD 完整取代编辑器的推荐做法。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'enable_block',
 						'type'  => 'checkbox',
-						'title' => __( '注册「ByteMD Markdown」区块', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '在区块编辑器中提供 bytemd/editor 区块，Markdown 存在区块属性里，前端由服务端渲染。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '注册「Newbee Markdown」区块', 'newbee-markdown-editor' ),
+						'desc'  => __( '在区块编辑器中提供 bytemd/editor 区块，Markdown 存在区块属性里，前端由服务端渲染。', 'newbee-markdown-editor' ),
 					),
 				),
 			),
 			'editor'   => array(
-				'title'  => __( '编辑器', 'newbee-markdown-editor-bytemd' ),
-				'intro'  => __( '外观与编辑器插件。ByteMD 1.22.0 已随插件打包，不依赖任何外部 CDN。', 'newbee-markdown-editor-bytemd' ),
+				'title'  => __( '编辑器', 'newbee-markdown-editor' ),
+				'intro'  => __( '外观与编辑器插件。ByteMD 1.22.0 已随插件打包，不依赖任何外部 CDN。', 'newbee-markdown-editor' ),
 				'fields' => array(
 					array(
 						'id'      => 'editor_mode',
 						'type'    => 'select',
-						'title'   => __( '显示模式', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '显示模式', 'newbee-markdown-editor' ),
 						'options' => array(
-							'split' => __( '分屏：左编辑右预览', 'newbee-markdown-editor-bytemd' ),
-							'tab'   => __( '标签页：编辑 / 预览切换', 'newbee-markdown-editor-bytemd' ),
-							'auto'  => __( '自动：窄屏标签页、宽屏分屏', 'newbee-markdown-editor-bytemd' ),
+							'split' => __( '分屏：左编辑右预览', 'newbee-markdown-editor' ),
+							'tab'   => __( '标签页：编辑 / 预览切换', 'newbee-markdown-editor' ),
+							'auto'  => __( '自动：窄屏标签页、宽屏分屏', 'newbee-markdown-editor' ),
 						),
 					),
 					array(
 						'id'    => 'editor_height',
 						'type'  => 'number',
-						'title' => __( '编辑器高度（px）', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '范围 240 – 2000，默认 640。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '编辑器高度（px）', 'newbee-markdown-editor' ),
+						'desc'  => __( '范围 240 – 2000，默认 640。', 'newbee-markdown-editor' ),
 						'min'   => 240,
 						'max'   => 2000,
 					),
 					array(
 						'id'      => 'theme',
 						'type'    => 'select',
-						'title'   => __( '配色', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '配色', 'newbee-markdown-editor' ),
 						'options' => array(
-							'auto'  => __( '跟随 WordPress 后台配色', 'newbee-markdown-editor-bytemd' ),
-							'light' => __( '始终浅色', 'newbee-markdown-editor-bytemd' ),
-							'dark'  => __( '始终深色', 'newbee-markdown-editor-bytemd' ),
+							'auto'  => __( '跟随 WordPress 后台配色', 'newbee-markdown-editor' ),
+							'light' => __( '始终浅色', 'newbee-markdown-editor' ),
+							'dark'  => __( '始终深色', 'newbee-markdown-editor' ),
 						),
 					),
 					array(
 						'id'      => 'locale',
 						'type'    => 'select',
-						'title'   => __( '界面语言', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '界面语言', 'newbee-markdown-editor' ),
 						'options' => array(
-							'auto'    => __( '自动（跟随用户语言）', 'newbee-markdown-editor-bytemd' ),
+							'auto'    => __( '自动（跟随用户语言）', 'newbee-markdown-editor' ),
 							'zh_Hans' => '简体中文',
 							'en'      => 'English',
 						),
@@ -123,72 +123,72 @@ class WP_ByteMD_Settings {
 					array(
 						'id'      => 'plugins',
 						'type'    => 'plugins',
-						'title'   => __( '编辑器插件', 'newbee-markdown-editor-bytemd' ),
-						'desc'    => __( '插件会同时影响编辑器预览与前端渲染结果。', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '编辑器插件', 'newbee-markdown-editor' ),
+						'desc'    => __( '插件会同时影响编辑器预览与前端渲染结果。', 'newbee-markdown-editor' ),
 						'options' => $plugins,
 					),
 				),
 			),
 			'frontend' => array(
-				'title'  => __( '前端渲染', 'newbee-markdown-editor-bytemd' ),
-				'intro'  => __( 'Markdown 原文存在 post_content 中，发布时按这里的策略转成 HTML。', 'newbee-markdown-editor-bytemd' ),
+				'title'  => __( '前端渲染', 'newbee-markdown-editor' ),
+				'intro'  => __( 'Markdown 原文存在 post_content 中，发布时按这里的策略转成 HTML。', 'newbee-markdown-editor' ),
 				'fields' => array(
 					array(
 						'id'      => 'frontend_render',
 						'type'    => 'select',
-						'title'   => __( '渲染方式', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '渲染方式', 'newbee-markdown-editor' ),
 						'options' => array(
-							'server' => __( '服务端渲染（Parsedown，推荐：利于 SEO、无需前端 JS）', 'newbee-markdown-editor-bytemd' ),
-							'client' => __( '浏览器渲染（ByteMD Viewer，与编辑器预览完全一致）', 'newbee-markdown-editor-bytemd' ),
-							'none'   => __( '不渲染（按纯文本段落输出）', 'newbee-markdown-editor-bytemd' ),
+							'server' => __( '服务端渲染（Parsedown，推荐：利于 SEO、无需前端 JS）', 'newbee-markdown-editor' ),
+							'client' => __( '浏览器渲染（ByteMD Viewer，与编辑器预览完全一致）', 'newbee-markdown-editor' ),
+							'none'   => __( '不渲染（按纯文本段落输出）', 'newbee-markdown-editor' ),
 						),
-						'desc'    => __( '两种方式的差异：服务端更快更利于收录；浏览器端能 100% 复现 ByteMD 预览（含 Mermaid / KaTeX）。', 'newbee-markdown-editor-bytemd' ),
+						'desc'    => __( '两种方式的差异：服务端更快更利于收录；浏览器端能 100% 复现 ByteMD 预览（含 Mermaid / KaTeX）。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'      => 'frontend_theme',
 						'type'    => 'select',
-						'title'   => __( '正文配色', 'newbee-markdown-editor-bytemd' ),
+						'title'   => __( '正文配色', 'newbee-markdown-editor' ),
 						'options' => array(
-							'auto'  => __( '自动（跟随访问者的系统偏好）', 'newbee-markdown-editor-bytemd' ),
-							'light' => __( '始终浅色', 'newbee-markdown-editor-bytemd' ),
-							'dark'  => __( '始终深色', 'newbee-markdown-editor-bytemd' ),
+							'auto'  => __( '自动（跟随访问者的系统偏好）', 'newbee-markdown-editor' ),
+							'light' => __( '始终浅色', 'newbee-markdown-editor' ),
+							'dark'  => __( '始终深色', 'newbee-markdown-editor' ),
 						),
 					),
 					array(
 						'id'    => 'allow_raw_html',
 						'type'  => 'checkbox',
-						'title' => __( '允许 Markdown 中的原始 HTML', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '不勾选时启用 Parsedown 安全模式，raw HTML 会被转义（拥有 unfiltered_html 权限的用户始终允许）。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '允许 Markdown 中的原始 HTML', 'newbee-markdown-editor' ),
+						'desc'  => __( '不勾选时启用 Parsedown 安全模式，raw HTML 会被转义（拥有 unfiltered_html 权限的用户始终允许）。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'frontend_math',
 						'type'  => 'checkbox',
-						'title' => __( '前端渲染数学公式（KaTeX）', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '服务端渲染模式下，页面中出现 $…$ / $$…$$ 时才加载插件内置的 KaTeX 资源。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '前端渲染数学公式（KaTeX）', 'newbee-markdown-editor' ),
+						'desc'  => __( '服务端渲染模式下，页面中出现 $…$ / $$…$$ 时才加载插件内置的 KaTeX 资源。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'frontend_mermaid',
 						'type'  => 'checkbox',
-						'title' => __( '前端渲染 Mermaid 图表', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '页面中出现 ```mermaid 代码块时才加载插件内置的 Mermaid（约 3.3 MB，不占用普通页面）。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '前端渲染 Mermaid 图表', 'newbee-markdown-editor' ),
+						'desc'  => __( '页面中出现 ```mermaid 代码块时才加载插件内置的 Mermaid（约 3.3 MB，不占用普通页面）。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'enable_shortcode',
 						'type'  => 'checkbox',
-						'title' => __( '启用 [bytemd] 短代码', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '可在任意文章/页面中用 [bytemd]…[/bytemd] 包裹 Markdown 片段。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '启用 [bytemd] 短代码', 'newbee-markdown-editor' ),
+						'desc'  => __( '可在任意文章/页面中用 [bytemd]…[/bytemd] 包裹 Markdown 片段。', 'newbee-markdown-editor' ),
 					),
 					array(
 						'id'    => 'strip_markdown_excerpt',
 						'type'  => 'checkbox',
-						'title' => __( '自动剥离摘要中的 Markdown 标记', 'newbee-markdown-editor-bytemd' ),
-						'desc'  => __( '列表页/搜索页的摘要不再出现 ##、[]() 之类的语法符号。', 'newbee-markdown-editor-bytemd' ),
+						'title' => __( '自动剥离摘要中的 Markdown 标记', 'newbee-markdown-editor' ),
+						'desc'  => __( '列表页/搜索页的摘要不再出现 ##、[]() 之类的语法符号。', 'newbee-markdown-editor' ),
 					),
 				),
 			),
 			'advanced' => array(
-				'title'  => __( '关于外部资源', 'newbee-markdown-editor-bytemd' ),
-				'intro'  => __( '本插件不向任何第三方服务器发起请求：ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，仅在实际用到时才加载对应文件。所谓「高级设置」在这里没有存在的必要。', 'newbee-markdown-editor-bytemd' ),
+				'title'  => __( '关于外部资源', 'newbee-markdown-editor' ),
+				'intro'  => __( '本插件不向任何第三方服务器发起请求：ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，仅在实际用到时才加载对应文件。所谓「高级设置」在这里没有存在的必要。', 'newbee-markdown-editor' ),
 				'fields' => array(),
 			),
 		);
@@ -205,7 +205,7 @@ class WP_ByteMD_Settings {
 			WP_ByteMD_Options::OPTION,
 			array(
 				'type'              => 'array',
-				'description'       => __( 'ByteMD 集成设置', 'newbee-markdown-editor-bytemd' ),
+				'description'       => __( 'ByteMD 集成设置', 'newbee-markdown-editor' ),
 				'sanitize_callback' => array( $this, 'sanitize' ),
 				'default'           => WP_ByteMD_Options::defaults(),
 				'show_in_rest'      => false,
@@ -255,7 +255,7 @@ class WP_ByteMD_Settings {
 					'<label><input type="checkbox" name="%s" value="1" %s /> %s</label>',
 					esc_attr( $name ),
 					checked( (bool) $value, true, false ),
-					esc_html__( '启用', 'newbee-markdown-editor-bytemd' )
+					esc_html__( '启用', 'newbee-markdown-editor' )
 				);
 				break;
 
@@ -435,12 +435,12 @@ class WP_ByteMD_Settings {
 		}
 		?>
 		<div class="wrap wp-bytemd-settings">
-			<h1><?php esc_html_e( 'ByteMD 集成设置', 'newbee-markdown-editor-bytemd' ); ?></h1>
+			<h1><?php esc_html_e( 'ByteMD 集成设置', 'newbee-markdown-editor' ); ?></h1>
 			<p class="description">
 				<?php
 				printf(
 					/* translators: 1: ByteMD version, 2: plugin version */
-					esc_html__( '编辑器内核 ByteMD %1$s（已打包，无需 CDN）；插件版本 %2$s。', 'newbee-markdown-editor-bytemd' ),
+					esc_html__( '编辑器内核 ByteMD %1$s（已打包，无需 CDN）；插件版本 %2$s。', 'newbee-markdown-editor' ),
 					esc_html( WP_BYTEMD_BYTEMD_VERSION ),
 					esc_html( WP_BYTEMD_VERSION )
 				);
@@ -498,24 +498,24 @@ class WP_ByteMD_Settings {
 		};
 
 		$rows = array(
-			__( 'WordPress 版本', 'newbee-markdown-editor-bytemd' )      => get_bloginfo( 'version' ),
-			__( 'PHP 版本', 'newbee-markdown-editor-bytemd' )            => PHP_VERSION,
-			__( 'ByteMD 内核', 'newbee-markdown-editor-bytemd' )         => $manifest && ! empty( $manifest['bytemd'] ) ? $manifest['bytemd'] : WP_BYTEMD_BYTEMD_VERSION,
-			__( '编辑器资源', 'newbee-markdown-editor-bytemd' )          => $describe( 'bytemd-editor.js', __( '缺失（请执行 npm run build）', 'newbee-markdown-editor-bytemd' ) ),
-			__( '前端渲染资源', 'newbee-markdown-editor-bytemd' )        => $describe( 'bytemd-viewer.js', __( '缺失（仅影响浏览器渲染模式）', 'newbee-markdown-editor-bytemd' ) ),
-			__( 'KaTeX 资源', 'newbee-markdown-editor-bytemd' )          => $describe( 'bytemd-katex.js', __( '缺失（公式不会在前端渲染）', 'newbee-markdown-editor-bytemd' ) ),
-			__( 'Mermaid 资源', 'newbee-markdown-editor-bytemd' )        => $describe( 'bytemd-mermaid.js', __( '缺失（图表不会在前端渲染）', 'newbee-markdown-editor-bytemd' ) ),
-			__( 'Parsedown', 'newbee-markdown-editor-bytemd' )           => file_exists( WP_BYTEMD_DIR . 'vendor/parsedown/Parsedown.php' )
-				? __( '已就绪（服务端渲染可用）', 'newbee-markdown-editor-bytemd' )
-				: __( '缺失（将退化为纯文本输出）', 'newbee-markdown-editor-bytemd' ),
-			__( '区块编辑器', 'newbee-markdown-editor-bytemd' )          => WP_ByteMD_Options::is_on( 'force_classic' )
-				? __( '已对启用的内容类型关闭', 'newbee-markdown-editor-bytemd' )
-				: __( '保持启用', 'newbee-markdown-editor-bytemd' ),
-			__( 'Markdown 文章数', 'newbee-markdown-editor-bytemd' )     => (string) $this->count_markdown_posts(),
+			__( 'WordPress 版本', 'newbee-markdown-editor' )      => get_bloginfo( 'version' ),
+			__( 'PHP 版本', 'newbee-markdown-editor' )            => PHP_VERSION,
+			__( 'ByteMD 内核', 'newbee-markdown-editor' )         => $manifest && ! empty( $manifest['bytemd'] ) ? $manifest['bytemd'] : WP_BYTEMD_BYTEMD_VERSION,
+			__( '编辑器资源', 'newbee-markdown-editor' )          => $describe( 'bytemd-editor.js', __( '缺失（请执行 npm run build）', 'newbee-markdown-editor' ) ),
+			__( '前端渲染资源', 'newbee-markdown-editor' )        => $describe( 'bytemd-viewer.js', __( '缺失（仅影响浏览器渲染模式）', 'newbee-markdown-editor' ) ),
+			__( 'KaTeX 资源', 'newbee-markdown-editor' )          => $describe( 'bytemd-katex.js', __( '缺失（公式不会在前端渲染）', 'newbee-markdown-editor' ) ),
+			__( 'Mermaid 资源', 'newbee-markdown-editor' )        => $describe( 'bytemd-mermaid.js', __( '缺失（图表不会在前端渲染）', 'newbee-markdown-editor' ) ),
+			__( 'Parsedown', 'newbee-markdown-editor' )           => file_exists( WP_BYTEMD_DIR . 'vendor/parsedown/Parsedown.php' )
+				? __( '已就绪（服务端渲染可用）', 'newbee-markdown-editor' )
+				: __( '缺失（将退化为纯文本输出）', 'newbee-markdown-editor' ),
+			__( '区块编辑器', 'newbee-markdown-editor' )          => WP_ByteMD_Options::is_on( 'force_classic' )
+				? __( '已对启用的内容类型关闭', 'newbee-markdown-editor' )
+				: __( '保持启用', 'newbee-markdown-editor' ),
+			__( 'Markdown 文章数', 'newbee-markdown-editor' )     => (string) $this->count_markdown_posts(),
 		);
 		?>
 		<div class="card" style="max-width:100%;margin:16px 0 24px">
-			<h2><?php esc_html_e( '运行状态', 'newbee-markdown-editor-bytemd' ); ?></h2>
+			<h2><?php esc_html_e( '运行状态', 'newbee-markdown-editor' ); ?></h2>
 			<table class="widefat striped" style="max-width:820px">
 				<tbody>
 				<?php foreach ( $rows as $label => $value ) : ?>

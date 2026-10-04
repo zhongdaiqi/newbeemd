@@ -1,10 +1,10 @@
-=== Newbee Markdown Editor (ByteMD) ===
+=== Newbee Markdown Editor ===
 Contributors: zhongdaiqi
 Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -44,12 +44,12 @@ This plugin never contacts an external server. The editor, highlight.js, KaTeX a
 
 **Source code and build tools**
 
-Development happens on GitHub: https://github.com/zhongdaiqi/wpbytemd
+Development happens on GitHub: https://github.com/zhongdaiqi/newbeemd
 
 The files in `assets/vendor/` are compiled from that repository. To rebuild them from source:
 
-    git clone https://github.com/zhongdaiqi/wpbytemd
-    cd wpbytemd/wp-bytemd/build
+    git clone https://github.com/zhongdaiqi/newbeemd
+    cd newbeemd/wp-bytemd/build
     npm install
     npm run build
 
@@ -92,7 +92,7 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 
 = Where can I get help? =
 
-Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/wpbytemd/issues
+Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/newbeemd/issues
 
 == Changelog ==
 
@@ -142,6 +142,9 @@ Please use this plugin's support forum, or open an issue at https://github.com/z
 * First release: ByteMD 1.22.0, classic editor takeover, editor block, server/client rendering, image uploads, KaTeX, Mermaid, shortcode.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Renamed to Newbee Markdown Editor, with all assets moved to the WordPress enqueue API. No configuration changes are required.
 
 = 1.0.1 =
 Fixes activation failing with "Plugin file does not exist" on servers whose unzip implementation follows the ZIP specification strictly.

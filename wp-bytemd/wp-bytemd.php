@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Newbee Markdown Editor (ByteMD)
- * Plugin URI:        https://github.com/zhongdaiqi/wpbytemd
- * Description:       Markdown editing for WordPress powered by ByteMD. Split-pane editor with GFM, code highlighting, KaTeX and Mermaid, plus server- or client-side rendering of the stored Markdown.
+ * Plugin Name:       Newbee Markdown Editor
+ * Plugin URI:        https://github.com/zhongdaiqi/newbeemd
+ * Description:       Markdown editing for WordPress, built on ByteMD. GFM tables, code highlighting, KaTeX maths and Mermaid diagrams, with server- or client-side rendering of the stored Markdown. Independent, unofficial integration - not affiliated with or endorsed by ByteDance.
  * Version:           1.2.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
@@ -10,7 +10,7 @@
  * Author URI:        https://github.com/zhongdaiqi
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
- * Text Domain:       newbee-markdown-editor-bytemd
+ * Text Domain:       newbee-markdown-editor
  * Domain Path:       /languages
  *
  * @package WP_ByteMD

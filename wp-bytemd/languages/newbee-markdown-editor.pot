@@ -1,20 +1,39 @@
-# Copyright (C) 2026 Newbee Markdown Editor (ByteMD)
+# Copyright (C) 2026 Newbee Markdown Editor
 # This file is distributed under the MIT license.
 msgid ""
 msgstr ""
-"Project-Id-Version: Newbee Markdown Editor (ByteMD) 1.2.1\n"
-"Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/wpbytemd/issues\n"
+"Project-Id-Version: Newbee Markdown Editor 1.2.1\n"
+"Report-Msgid-Bugs-To: https://github.com/zhongdaiqi/newbeemd/issues\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Domain: newbee-markdown-editor-bytemd\n"
+"X-Domain: newbee-markdown-editor\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: assets/js/bytemd-block.js
+msgid "Markdown"
+msgstr ""
+
+msgid "Newbee Markdown"
+msgstr ""
+
+msgid "写作"
+msgstr ""
+
+msgid "正在加载编辑器…"
+msgstr ""
+
+msgid "用 Markdown 写作，前端按 Markdown 渲染。由 ByteMD 驱动。"
+msgstr ""
+
+msgid "编辑器运行时加载失败："
+msgstr ""
 
 #: includes/class-wp-bytemd-admin.php
 msgid "当前使用 WordPress 原生编辑器（ByteMD 已在本次编辑中关闭）。"
 msgstr ""
 
-msgid "未找到打包好的 ByteMD 运行时资源（assets/vendor/bytemd-editor.js）。请在插件目录执行构建，或从发行包中重新安装。"
+msgid "未找到打包好的运行时资源（assets/vendor/bytemd-editor.js）。请从官方发行包重新安装本插件，或在仓库中重新构建后补充 assets/vendor/ 目录。"
 msgstr ""
 
 msgid "重新启用 ByteMD"
@@ -55,10 +74,10 @@ msgid "（空文档）"
 msgstr ""
 
 #: includes/class-wp-bytemd-block.php
-msgid "ByteMD Markdown"
+msgid "Newbee Markdown"
 msgstr ""
 
-msgid "使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。"
+msgid "用 Markdown 写作，前端按 Markdown 渲染。由 ByteMD 驱动。"
 msgstr ""
 
 #: includes/class-wp-bytemd-options.php
@@ -87,13 +106,7 @@ msgid "数学公式（KaTeX，$…$ 与 $$…$$）"
 msgstr ""
 
 #: includes/class-wp-bytemd-settings.php
-msgid "ByteMD"
-msgstr ""
-
 msgid "ByteMD 内核"
-msgstr ""
-
-msgid "ByteMD 设置"
 msgstr ""
 
 msgid "ByteMD 集成设置"
@@ -109,6 +122,12 @@ msgid "Markdown 文章数"
 msgstr ""
 
 msgid "Mermaid 资源"
+msgstr ""
+
+msgid "Newbee Markdown"
+msgstr ""
+
+msgid "Newbee Markdown 设置"
 msgstr ""
 
 msgid "PHP 版本"
@@ -228,7 +247,7 @@ msgstr ""
 msgid "正文配色"
 msgstr ""
 
-msgid "注册「ByteMD Markdown」区块"
+msgid "注册「Newbee Markdown」区块"
 msgstr ""
 
 msgid "浏览器渲染（ByteMD Viewer，与编辑器预览完全一致）"

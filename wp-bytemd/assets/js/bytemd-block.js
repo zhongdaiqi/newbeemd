@@ -67,7 +67,7 @@
 				}
 			};
 			script.onerror = function () {
-				reject( new Error( 'ByteMD 运行时加载失败：' + runtime.script ) );
+				reject( new Error( '编辑器运行时加载失败：' + runtime.script ) );
 			};
 			document.head.appendChild( script );
 		} );
@@ -195,7 +195,7 @@
 				el(
 					'div',
 					{ className: 'wp-bytemd-block-error', key: 'err' },
-					__( 'ByteMD 运行时加载失败：', 'wp-bytemd' ) + error
+					__( '编辑器运行时加载失败：', 'newbee-markdown-editor' ) + error
 				)
 			);
 		}
@@ -214,7 +214,7 @@
 				el(
 					'p',
 					{ className: 'wp-bytemd-block-hint', key: 'hint' },
-					__( '正在加载 ByteMD 编辑器…', 'wp-bytemd' )
+					__( '正在加载编辑器…', 'newbee-markdown-editor' )
 				)
 			);
 		}
@@ -228,14 +228,14 @@
 
 	blocks.registerBlockType( 'bytemd/editor', {
 		apiVersion: 3,
-		title: __( 'ByteMD Markdown', 'wp-bytemd' ),
-		description: __( '使用 ByteMD 编写 Markdown，前端按 Markdown 渲染。', 'wp-bytemd' ),
+		title: __( 'Newbee Markdown', 'newbee-markdown-editor' ),
+		description: __( '用 Markdown 写作，前端按 Markdown 渲染。由 ByteMD 驱动。', 'newbee-markdown-editor' ),
 		category: 'text',
 		icon: 'editor-code',
 		keywords: [
-			__( 'Markdown', 'wp-bytemd' ),
+			__( 'Markdown', 'newbee-markdown-editor' ),
 			'ByteMD',
-			__( '写作', 'wp-bytemd' ),
+			__( '写作', 'newbee-markdown-editor' ),
 		],
 		supports: {
 			html: false,

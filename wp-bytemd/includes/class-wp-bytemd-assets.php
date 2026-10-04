@@ -20,6 +20,9 @@ class WP_ByteMD_Assets {
 	const HANDLE_CONTENT_CSS   = 'wp-bytemd-content';
 	const HANDLE_KATEX_CSS     = 'wp-bytemd-katex';
 
+	/** Text domain, which WordPress.org requires to equal the plugin slug. */
+	const TEXTDOMAIN = 'newbee-markdown-editor';
+
 	/**
 	 * Constructor.
 	 */
@@ -89,6 +92,10 @@ class WP_ByteMD_Assets {
 			self::asset_version( 'js/bytemd-block.js' ),
 			true
 		);
+
+		// The block script is the only one with translated strings; without this
+		// call its `__()` lookups would never resolve.
+		wp_set_script_translations( self::HANDLE_BLOCK, self::TEXTDOMAIN, WP_BYTEMD_DIR . 'languages' );
 
 		wp_register_script(
 			self::HANDLE_FRONTEND,
@@ -184,17 +191,17 @@ class WP_ByteMD_Assets {
 			'restEndpoint'   => esc_url_raw( rest_url( 'wp/v2/media' ) ),
 			'restNonce'      => wp_create_nonce( 'wp_rest' ),
 			'maxUploadSize'  => (int) wp_max_upload_size(),
-			'mediaTitle'     => __( '从 ByteMD 上传', 'newbee-markdown-editor-bytemd' ),
+			'mediaTitle'     => __( '从 ByteMD 上传', 'newbee-markdown-editor' ),
 			'strings'        => array(
-				'editorLabel'  => __( 'ByteMD Markdown 编辑器', 'newbee-markdown-editor-bytemd' ),
-				'chars'        => __( '字符', 'newbee-markdown-editor-bytemd' ),
-				'switchToWp'   => __( '切换到 WordPress 编辑器', 'newbee-markdown-editor-bytemd' ),
-				'switchToMd'   => __( '切换到 ByteMD Markdown 编辑器', 'newbee-markdown-editor-bytemd' ),
-				'uploadFailed' => __( '图片上传失败', 'newbee-markdown-editor-bytemd' ),
-				'tooLarge'     => __( '文件超过服务器上传上限', 'newbee-markdown-editor-bytemd' ),
-				'notImage'     => __( '只允许上传图片', 'newbee-markdown-editor-bytemd' ),
-				'emptyValue'   => __( '（空文档）', 'newbee-markdown-editor-bytemd' ),
-				'unsavedHint'  => __( '内容已同步到 WordPress 编辑器，可正常保存 / 预览 / 自动保存。', 'newbee-markdown-editor-bytemd' ),
+				'editorLabel'  => __( 'ByteMD Markdown 编辑器', 'newbee-markdown-editor' ),
+				'chars'        => __( '字符', 'newbee-markdown-editor' ),
+				'switchToWp'   => __( '切换到 WordPress 编辑器', 'newbee-markdown-editor' ),
+				'switchToMd'   => __( '切换到 ByteMD Markdown 编辑器', 'newbee-markdown-editor' ),
+				'uploadFailed' => __( '图片上传失败', 'newbee-markdown-editor' ),
+				'tooLarge'     => __( '文件超过服务器上传上限', 'newbee-markdown-editor' ),
+				'notImage'     => __( '只允许上传图片', 'newbee-markdown-editor' ),
+				'emptyValue'   => __( '（空文档）', 'newbee-markdown-editor' ),
+				'unsavedHint'  => __( '内容已同步到 WordPress 编辑器，可正常保存 / 预览 / 自动保存。', 'newbee-markdown-editor' ),
 			),
 		);
 	}
@@ -222,25 +229,8 @@ class WP_ByteMD_Assets {
 				'theme'   => 'default',
 			),
 			'strings'    => array(
-				'mermaidError' => __( '图表渲染失败', 'newbee-markdown-editor-bytemd' ),
+				'mermaidError' => __( '图表渲染失败', 'newbee-markdown-editor' ),
 			),
-		);
-	}
-
-	/**
-	 * Print a tiny inline global so the front-end script knows its config even
-	 * when nothing else has been localised yet.
-	 *
-	 * @param string $object_name Global variable name.
-	 * @param array  $config      Config array.
-	 * @return void
-	 */
-	public static function print_config( $object_name, array $config ) {
-		printf(
-			"<script id=\"%s\">window.%s=%s;</script>\n",
-			esc_attr( $object_name . '-config' ),
-			esc_js( $object_name ),
-			wp_json_encode( $config )
 		);
 	}
 }

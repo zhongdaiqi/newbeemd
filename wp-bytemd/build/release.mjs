@@ -138,11 +138,17 @@ if (sh('git', ['ls-remote', '--tags', 'origin', `refs/tags/${tag}`])) {
 }
 
 const readmeText = readFileSync(README_TXT, 'utf8')
-if (readmeText.includes(`= ${next} =`)) {
-  die(`readme.txt 已经有 "= ${next} =" 的 changelog 条目。`)
-}
 if (!readmeText.includes('== Changelog ==')) {
   die('readme.txt 里找不到 "== Changelog ==" 段落。')
+}
+
+// Only look inside the Changelog section: the Upgrade Notice section legitimately
+// carries a `= <version> =` heading for the same release.
+const changelogStart = readmeText.indexOf('== Changelog ==')
+const changelogEnd = readmeText.indexOf('== ', changelogStart + 1)
+const changelogBody = readmeText.slice(changelogStart, changelogEnd === -1 ? undefined : changelogEnd)
+if (changelogBody.includes(`= ${next} =`)) {
+  die(`readme.txt 的 changelog 里已经有 "= ${next} =" 条目。`)
 }
 
 const zipRel = `dist/wp-bytemd-${next}.zip`
