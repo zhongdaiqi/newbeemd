@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -95,6 +95,16 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/newbeemd/issues
 
 == Changelog ==
+
+= 1.3.0 =
+* Renamed to **Newbee Markdown Editor**. The display name no longer carries the ByteMD project name, so the name reads as one independent integration instead of an official ByteMD product. The slug and text domain are now `newbee-markdown-editor`. ByteMD stays credited in the description, and the plugin remains an unofficial integration that is not affiliated with or endorsed by ByteDance.
+* Every asset now goes through the WordPress enqueue API. A stylesheet that had to load after the head was printed with a hand-written `<link>` tag; WordPress already prints late-enqueued styles itself through `print_late_styles()`, so the tag is gone - which also fixes that stylesheet being loaded twice on those pages.
+* Removed a hand-written `<script>` tag that carried the viewer configuration as a fallback. It was unreachable in practice, and the script it configured is not loaded in that situation either.
+* Removed `load_plugin_textdomain()`, which has not been needed for plugins hosted on WordPress.org since WordPress 4.6.
+* The block editor script still used a retired text domain, so none of its strings were translatable. The domain is corrected and `wp_set_script_translations()` is registered for it.
+* The settings page and the editor block now use the plugin's own name instead of the ByteMD project name.
+* Fixed the "Settings" link on the Plugins screen, which pointed at a page slug that no longer existed.
+* Repository links updated to https://github.com/zhongdaiqi/newbeemd.
 
 = 1.2.1 =
 * 修掉 WordPress.org 自动预检拦下的一条 ERROR，并减少一条告警。
