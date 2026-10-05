@@ -469,6 +469,24 @@ class WP_ByteMD_Settings {
 				submit_button();
 				?>
 			</form>
+
+			<hr />
+
+			<p class="description">
+				<?php
+				printf(
+					/* translators: %s: link to the plugin source repository. */
+					esc_html__( '本插件为独立开发的第三方集成，非 ByteMD 官方项目。源码与问题反馈：%s', 'newbee-markdown-editor' ),
+					'<a href="https://github.com/zhongdaiqi/newbeemd" target="_blank" rel="noopener noreferrer">github.com/zhongdaiqi/newbeemd</a>'
+				);
+				?>
+			</p>
+			<p class="description">
+				<?php esc_html_e( '"Newbee Markdown Editor" 是本插件的产品名，与任何名称相近的公司、产品或商标持有人均无隶属或背书关系。', 'newbee-markdown-editor' ); ?>
+			</p>
+			<p class="description">
+				<em><?php esc_html_e( 'Newbee Markdown Editor is an independent project and is not affiliated with any similarly named company.', 'newbee-markdown-editor' ); ?></em>
+			</p>
 		</div>
 		<?php
 	}

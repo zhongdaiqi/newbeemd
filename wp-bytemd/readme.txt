@@ -55,9 +55,11 @@ The files in `assets/vendor/` are compiled from that repository. To rebuild them
 
 The build tooling is not part of the plugin archive, because none of it is needed to run the plugin.
 
-**Credits and licence**
+**Credits, licence and naming**
 
 ByteMD is an open source project by ByteDance, released under the MIT licence. This plugin is an independent, unofficial integration and is not affiliated with or endorsed by ByteDance. The full list of bundled components and their licences is in `THIRD-PARTY-NOTICES.md` inside the plugin.
+
+"Newbee Markdown Editor" is the name of this plugin only. This is an independent project and is not affiliated with, sponsored by, licensed by or endorsed by any similarly named company, product or trademark holder. The name is not a claim of exclusive rights in the word "Newbee", and no confusion with any earlier mark is intended.
 
 == Installation ==
 

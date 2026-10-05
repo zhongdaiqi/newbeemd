@@ -251,3 +251,5 @@ A：可以，设置页里勾选即可；也可以临时用 `wp_bytemd_post_types
 组件总数与逐条版权署名以 `THIRD-PARTY-NOTICES.md` 为准：它由 `node build/notices.mjs` 读取 esbuild metafile 生成，只列出**真正进了产物**的包（esbuild 会 tree-shake，按 `package.json` 遍历会多算 26 个）。
 
 **非官方声明**：本插件是第三方非官方集成，与字节跳动（ByteDance）及 ByteMD 项目官方无隶属或背书关系。“ByteMD”为其开源项目名称，此处仅用于说明所集成的编辑器组件。
+
+**名称与商标**：`Newbee Markdown Editor` 是本项目的自有名称，仅作为 WordPress 插件的产品名使用。本项目独立开发，**与任何名称相近的公司、产品或商标持有人均无隶属、赞助、许可或背书关系**（Newbee Markdown Editor is an independent project and is not affiliated with any similarly named company）。项目名不主张对 `Newbee` 一词的排他权利，也不意图与任何在先商标产生混淆。

@@ -118,6 +118,9 @@ msgid "数学公式（KaTeX，$…$ 与 $$…$$）"
 msgstr ""
 
 #: includes/class-wp-bytemd-settings.php
+msgid "\"Newbee Markdown Editor\" 是本插件的产品名，与任何名称相近的公司、产品或商标持有人均无隶属或背书关系。"
+msgstr ""
+
 msgid "ByteMD 内核"
 msgstr ""
 
@@ -137,6 +140,9 @@ msgid "Mermaid 资源"
 msgstr ""
 
 msgid "Newbee Markdown"
+msgstr ""
+
+msgid "Newbee Markdown Editor is an independent project and is not affiliated with any similarly named company."
 msgstr ""
 
 msgid "Newbee Markdown 设置"
@@ -257,6 +263,9 @@ msgid "服务端渲染（Parsedown，推荐：利于 SEO、无需前端 JS）"
 msgstr ""
 
 msgid "本插件不向任何第三方服务器发起请求：ByteMD、highlight.js、KaTeX、Mermaid 全部随插件打包，仅在实际用到时才加载对应文件。所谓「高级设置」在这里没有存在的必要。"
+msgstr ""
+
+msgid "本插件为独立开发的第三方集成，非 ByteMD 官方项目。源码与问题反馈：%s"
 msgstr ""
 
 msgid "标签页：编辑 / 预览切换"

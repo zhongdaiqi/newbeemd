@@ -8,6 +8,8 @@
 [![Release](https://img.shields.io/github/v/release/zhongdaiqi/newbeemd)](https://github.com/zhongdaiqi/newbeemd/releases/latest)
 
 > **非官方声明**：本项目是第三方非官方集成，与字节跳动（ByteDance）及 ByteMD 项目官方**无隶属或背书关系**。"ByteMD" 为其开源项目名称，此处仅用于说明所集成的编辑器组件。
+>
+> **Independence notice**: Newbee Markdown Editor is an independent project and is not affiliated with any similarly named company.
 
 ---
 
@@ -137,6 +139,10 @@ node release.mjs 1.0.2 --notes release-notes.md    # 说明也可以是一个文
 - [ByteMD](https://github.com/bytedance/bytemd) —— 编辑器本体，由字节跳动开源
 - [Parsedown](https://github.com/erusev/parsedown) / [ParsedownExtra](https://github.com/erusev/parsedown-extra) —— 服务端 Markdown 渲染
 - [KaTeX](https://katex.org/)、[highlight.js](https://highlightjs.org/)、[CodeMirror](https://codemirror.net/)
+
+## 名称与商标
+
+`Newbee Markdown Editor` 是本项目的自有名称，仅作为 WordPress 插件的产品名使用。本项目是独立开发的开源项目，**与任何名称相近的公司、产品或商标持有人均无隶属、赞助、许可或背书关系**（Newbee Markdown Editor is an independent project and is not affiliated with any similarly named company）。项目名不主张对 `Newbee` 一词的排他权利，也不意图与任何在先商标产生混淆。
 
 ## 许可
 
