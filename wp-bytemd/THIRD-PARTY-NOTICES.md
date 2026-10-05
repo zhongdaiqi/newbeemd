@@ -34,7 +34,7 @@ Section 3 states the relationship to the upstream ByteMD project.
 `legalComments: 'none'`——该选项会移除输出中的所有注释，因此这些组件的版权与许可证声明
 **不会出现在打包产物内部**，改由本文档统一承载。MIT 与 BSD-3-Clause 均要求版权声明随软件一并分发。
 
-- 生成时间：2026-10-05T12:48:13.075Z
+- 生成时间：2026-10-05T13:18:34.914Z
 - 打包的 ByteMD 版本：1.22.0
 - 组件总数：**171**
 - 完整依赖清单见 `assets/vendor/MANIFEST.json`

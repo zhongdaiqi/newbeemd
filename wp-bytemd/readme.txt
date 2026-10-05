@@ -4,7 +4,7 @@ Tags: markdown, markdown editor, editor, gfm, katex
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -95,6 +95,9 @@ No. Every asset is served from the plugin directory, which also makes the plugin
 Please use this plugin's support forum, or open an issue at https://github.com/zhongdaiqi/newbeemd/issues
 
 == Changelog ==
+
+= 1.3.1 =
+* 默认浅色编辑器（修复后台配色误判）；插入链接等工具提示改为可读配色；前台服务端渲染新增代码高亮与复制按钮；修复含特定字样的文章被跳过 Markdown 渲染的问题。
 
 = 1.3.0 =
 * Renamed to **Newbee Markdown Editor**. The display name no longer carries the ByteMD project name, so the name reads as one independent integration instead of an official ByteMD product. The slug and text domain are now `newbee-markdown-editor`. ByteMD stays credited in the description, and the plugin remains an unofficial integration that is not affiliated with or endorsed by ByteDance.
