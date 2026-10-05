@@ -69,13 +69,27 @@ class WP_ByteMD_Frontend {
 	}
 
 	/**
-	 * Does this post need the KaTeX / Mermaid runtime?
+	 * Does this post need the front-end runtime script?
+	 *
+	 * The script does three things: highlight fenced code blocks in
+	 * server-rendered output, add a copy button to every code block, and
+	 * lazily pull in the KaTeX / Mermaid runtimes. So it is needed whenever the
+	 * post contains a code block at all — not only when maths or a diagram is
+	 * present.
+	 *
+	 * It also has to be enqueued for the *block* path, where the post content
+	 * holds block markup rather than Markdown.
 	 *
 	 * @param WP_Post $post Post.
 	 * @return bool
 	 */
 	private function needs_runtime_scripts( $post ) {
 		$content = (string) $post->post_content;
+
+		// Client rendering always needs the script, whatever the content is.
+		if ( 'client' === WP_ByteMD_Options::get( 'frontend_render', 'server' ) ) {
+			return true;
+		}
 
 		if ( WP_ByteMD_Options::is_on( 'frontend_mermaid' ) && false !== strpos( $content, '```mermaid' ) ) {
 			return true;
@@ -85,7 +99,33 @@ class WP_ByteMD_Frontend {
 			return true;
 		}
 
-		return ( 'client' === WP_ByteMD_Options::get( 'frontend_render', 'server' ) );
+		// Code highlighting and the copy button. Any fenced block counts,
+		// including a fence with no info string (``` on its own line).
+		if ( WP_ByteMD_Options::is_on( 'frontend_highlight' ) && self::has_fenced_code( $content ) ) {
+			return true;
+		}
+
+		// The dynamic block renders through PHP; scan its Markdown attribute.
+		if ( function_exists( 'has_block' ) && has_block( WP_ByteMD_Block::BLOCK, $post ) ) {
+			return WP_ByteMD_Options::is_on( 'frontend_highlight' );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does this content contain a fenced code block?
+	 *
+	 * Deliberately permissive: a fence is three or more backticks (or tildes)
+	 * at the start of a line, optionally indented up to three spaces and
+	 * optionally followed by an info string. An unclosed fence still produces a
+	 * `<pre><code>` block in Parsedown, so it counts.
+	 *
+	 * @param string $content Markdown or block markup.
+	 * @return bool
+	 */
+	private static function has_fenced_code( $content ) {
+		return (bool) preg_match( '/^[ \t]{0,3}(`{3,}|~{3,})/m', $content );
 	}
 
 	/**

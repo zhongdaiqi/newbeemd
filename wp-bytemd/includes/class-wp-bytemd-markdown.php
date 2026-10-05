@@ -124,7 +124,45 @@ class WP_ByteMD_Markdown {
 			);
 		}
 
+		// The output is wrapped, so the front-end script that adds code
+		// highlighting and the copy button is wanted. `enqueue()` normally
+		// decides this up front from the queried post, but it cannot see
+		// Markdown that only arrives through a shortcode or a widget, so make
+		// sure here as well.
+		self::maybe_enqueue_frontend_assets();
+
 		return $html;
+	}
+
+	/**
+	 * Enqueue the front-end runtime if the settings and content call for it.
+	 *
+	 * Safe to call from inside `the_content`: `wp_enqueue_script()` still works
+	 * after the head has been printed, and WordPress prints late-enqueued
+	 * scripts in the footer itself.
+	 *
+	 * @return void
+	 */
+	private static function maybe_enqueue_frontend_assets() {
+		if ( is_admin() || 'none' === WP_ByteMD_Options::get( 'frontend_render', 'server' ) ) {
+			return;
+		}
+
+		if ( ! WP_ByteMD_Options::is_on( 'frontend_highlight' ) ) {
+			return;
+		}
+
+		wp_enqueue_script( WP_ByteMD_Assets::HANDLE_FRONTEND );
+
+		// `wp_localize_script()` is idempotent: it stores the data on the
+		// handle and prints it once, right before the script. Calling it from
+		// the content filter as well covers the case where the content is
+		// rendered before `enqueue()` had a chance to run.
+		wp_localize_script(
+			WP_ByteMD_Assets::HANDLE_FRONTEND,
+			'wpByteMDViewer',
+			WP_ByteMD_Assets::frontend_config()
+		);
 	}
 
 	/**
