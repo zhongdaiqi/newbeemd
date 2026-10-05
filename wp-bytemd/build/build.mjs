@@ -10,6 +10,7 @@
  *   bytemd-viewer.js / .css   front-end viewer bundle (Viewer only)
  *   bytemd-katex.js / .css    standalone KaTeX + auto-render, loaded on demand
  *   bytemd-mermaid.js         standalone Mermaid, loaded only when a page has a diagram
+ *   bytemd-hljs.js / .css     standalone highlight.js, loaded only when a page has code
  *   fonts/                    KaTeX fonts referenced by the CSS
  *   MANIFEST.json             versions + sizes, used by the PHP side for cache busting
  *
@@ -103,6 +104,7 @@ const result = await build({
     'bytemd-viewer': path.join(__dirname, 'src', 'viewer.js'),
     'bytemd-katex': path.join(__dirname, 'src', 'katex.js'),
     'bytemd-mermaid': path.join(__dirname, 'src', 'mermaid.js'),
+    'bytemd-hljs': path.join(__dirname, 'src', 'hljs-runtime.js'),
   },
   outdir,
   bundle: true,

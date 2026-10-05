@@ -64,7 +64,19 @@ msgstr ""
 msgid "图表渲染失败"
 msgstr ""
 
+msgid "复制"
+msgstr ""
+
+msgid "复制代码"
+msgstr ""
+
+msgid "复制失败"
+msgstr ""
+
 msgid "字符"
+msgstr ""
+
+msgid "已复制"
 msgstr ""
 
 msgid "文件超过服务器上传上限"
@@ -163,6 +175,9 @@ msgstr ""
 msgid "列表页/搜索页的摘要不再出现 ##、[]() 之类的语法符号。"
 msgstr ""
 
+msgid "前端代码高亮与复制按钮"
+msgstr ""
+
 msgid "前端渲染"
 msgstr ""
 
@@ -230,6 +245,9 @@ msgid "插件会同时影响编辑器预览与前端渲染结果。"
 msgstr ""
 
 msgid "显示模式"
+msgstr ""
+
+msgid "服务端渲染模式下自动高亮代码块（highlight.js，随插件打包、仅在含代码的页面加载），并在代码块右上角提供复制按钮。"
 msgstr ""
 
 msgid "服务端渲染模式下，页面中出现 $…$ / $$…$$ 时才加载插件内置的 KaTeX 资源。"

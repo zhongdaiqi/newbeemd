@@ -142,6 +142,7 @@
 }
 
 .wp-bytemd-content pre {
+	position: relative;
 	padding: 16px;
 	overflow: auto;
 	font-size: 85%;
@@ -160,6 +161,57 @@
 	white-space: pre;
 	word-break: normal;
 	overflow-wrap: normal;
+}
+
+/* highlight.js injects `pre code.hljs { padding: 1em; background: #fff }` at
+ * runtime (after this sheet), which would double-pad the block and paint a
+ * white strip inside dark code backgrounds. Re-assert our own values with a
+ * higher-specificity selector. */
+.wp-bytemd-content pre > code.hljs {
+	display: block;
+	padding: 0;
+	background: transparent;
+}
+
+/* Copy button */
+.wp-bytemd-copy {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
+	padding: 2px 10px;
+	font-size: 12px;
+	line-height: 20px;
+	font-family: inherit;
+	color: var(--wp-bytemd-muted);
+	background: var(--wp-bytemd-pre-bg);
+	border: 1px solid var(--wp-bytemd-border);
+	border-radius: 6px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity .15s ease;
+}
+
+.wp-bytemd-content pre:hover .wp-bytemd-copy,
+.wp-bytemd-copy:focus-visible,
+.wp-bytemd-copy.wp-bytemd-copy-ok {
+	opacity: 1;
+}
+
+.wp-bytemd-copy:hover {
+	color: var(--wp-bytemd-fg);
+	border-color: var(--wp-bytemd-accent);
+}
+
+.wp-bytemd-copy.wp-bytemd-copy-ok {
+	color: #1a7f37;
+}
+
+/* Touch devices have no hover: keep the button subtly visible. */
+@media (hover: none) {
+	.wp-bytemd-copy {
+		opacity: .85;
+	}
 }
 
 .wp-bytemd-content table {
@@ -237,6 +289,292 @@
 
 	.wp-bytemd-content .markdown-body {
 		color: var(--wp-bytemd-fg);
+	}
+}
+
+/* Code tokens: highlight.js ships the light GitHub palette. Swap in the
+ * GitHub Dark palette for dark contexts (auto dark scheme, unless the site
+ * forces light; or an explicit bytemd-theme-dark). */
+.bytemd-theme-dark .wp-bytemd-content .hljs,
+.wp-bytemd-content.bytemd-theme-dark .hljs {
+	color: #c9d1d9;
+}
+
+@media (prefers-color-scheme: dark) {
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs {
+		color: #c9d1d9;
+	}
+}
+
+.wp-bytemd-content .hljs-doctag,
+.wp-bytemd-content .hljs-keyword,
+.wp-bytemd-content .hljs-meta .hljs-keyword,
+.wp-bytemd-content .hljs-template-tag,
+.wp-bytemd-content .hljs-template-variable,
+.wp-bytemd-content .hljs-type,
+.wp-bytemd-content .hljs-variable.language_ {
+	color: #d73a49;
+}
+
+.wp-bytemd-content .hljs-title,
+.wp-bytemd-content .hljs-title.class_,
+.wp-bytemd-content .hljs-title.class_.inherited__,
+.wp-bytemd-content .hljs-title.function_ {
+	color: #6f42c1;
+}
+
+.wp-bytemd-content .hljs-attr,
+.wp-bytemd-content .hljs-attribute,
+.wp-bytemd-content .hljs-literal,
+.wp-bytemd-content .hljs-meta,
+.wp-bytemd-content .hljs-number,
+.wp-bytemd-content .hljs-operator,
+.wp-bytemd-content .hljs-variable,
+.wp-bytemd-content .hljs-selector-attr,
+.wp-bytemd-content .hljs-selector-class,
+.wp-bytemd-content .hljs-selector-id {
+	color: #005cc5;
+}
+
+.wp-bytemd-content .hljs-regexp,
+.wp-bytemd-content .hljs-string,
+.wp-bytemd-content .hljs-meta .hljs-string {
+	color: #032f62;
+}
+
+.wp-bytemd-content .hljs-built_in,
+.wp-bytemd-content .hljs-symbol {
+	color: #e36209;
+}
+
+.wp-bytemd-content .hljs-comment,
+.wp-bytemd-content .hljs-code,
+.wp-bytemd-content .hljs-formula {
+	color: #6a737d;
+}
+
+.wp-bytemd-content .hljs-name,
+.wp-bytemd-content .hljs-quote,
+.wp-bytemd-content .hljs-selector-tag,
+.wp-bytemd-content .hljs-selector-pseudo {
+	color: #22863a;
+}
+
+.wp-bytemd-content .hljs-subst {
+	color: #24292e;
+}
+
+.wp-bytemd-content .hljs-section {
+	color: #005cc5;
+	font-weight: bold;
+}
+
+.wp-bytemd-content .hljs-bullet {
+	color: #735c0f;
+}
+
+.wp-bytemd-content .hljs-addition {
+	color: #0a3069;
+	background-color: #ccffd8;
+}
+
+.wp-bytemd-content .hljs-deletion {
+	color: #c93c37;
+	background-color: #ffebe9;
+}
+
+/* Dark palette (GitHub Dark) for explicit dark theme or auto dark scheme. */
+.bytemd-theme-dark .wp-bytemd-content .hljs-doctag,
+.bytemd-theme-dark .wp-bytemd-content .hljs-keyword,
+.bytemd-theme-dark .wp-bytemd-content .hljs-meta .hljs-keyword,
+.bytemd-theme-dark .wp-bytemd-content .hljs-template-tag,
+.bytemd-theme-dark .wp-bytemd-content .hljs-template-variable,
+.bytemd-theme-dark .wp-bytemd-content .hljs-type,
+.bytemd-theme-dark .wp-bytemd-content .hljs-variable.language_,
+.wp-bytemd-content.bytemd-theme-dark .hljs-doctag,
+.wp-bytemd-content.bytemd-theme-dark .hljs-keyword,
+.wp-bytemd-content.bytemd-theme-dark .hljs-meta .hljs-keyword,
+.wp-bytemd-content.bytemd-theme-dark .hljs-template-tag,
+.wp-bytemd-content.bytemd-theme-dark .hljs-template-variable,
+.wp-bytemd-content.bytemd-theme-dark .hljs-type,
+.wp-bytemd-content.bytemd-theme-dark .hljs-variable.language_ {
+	color: #ff7b72;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-title,
+.bytemd-theme-dark .wp-bytemd-content .hljs-title.class_,
+.bytemd-theme-dark .wp-bytemd-content .hljs-title.class_.inherited__,
+.bytemd-theme-dark .wp-bytemd-content .hljs-title.function_,
+.wp-bytemd-content.bytemd-theme-dark .hljs-title,
+.wp-bytemd-content.bytemd-theme-dark .hljs-title.class_,
+.wp-bytemd-content.bytemd-theme-dark .hljs-title.class_.inherited__,
+.wp-bytemd-content.bytemd-theme-dark .hljs-title.function_ {
+	color: #d2a8ff;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-attr,
+.bytemd-theme-dark .wp-bytemd-content .hljs-attribute,
+.bytemd-theme-dark .wp-bytemd-content .hljs-literal,
+.bytemd-theme-dark .wp-bytemd-content .hljs-meta,
+.bytemd-theme-dark .wp-bytemd-content .hljs-number,
+.bytemd-theme-dark .wp-bytemd-content .hljs-operator,
+.bytemd-theme-dark .wp-bytemd-content .hljs-variable,
+.bytemd-theme-dark .wp-bytemd-content .hljs-selector-attr,
+.bytemd-theme-dark .wp-bytemd-content .hljs-selector-class,
+.bytemd-theme-dark .wp-bytemd-content .hljs-selector-id,
+.wp-bytemd-content.bytemd-theme-dark .hljs-attr,
+.wp-bytemd-content.bytemd-theme-dark .hljs-attribute,
+.wp-bytemd-content.bytemd-theme-dark .hljs-literal,
+.wp-bytemd-content.bytemd-theme-dark .hljs-meta,
+.wp-bytemd-content.bytemd-theme-dark .hljs-number,
+.wp-bytemd-content.bytemd-theme-dark .hljs-operator,
+.wp-bytemd-content.bytemd-theme-dark .hljs-variable,
+.wp-bytemd-content.bytemd-theme-dark .hljs-selector-attr,
+.wp-bytemd-content.bytemd-theme-dark .hljs-selector-class,
+.wp-bytemd-content.bytemd-theme-dark .hljs-selector-id {
+	color: #79c0ff;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-regexp,
+.bytemd-theme-dark .wp-bytemd-content .hljs-string,
+.bytemd-theme-dark .wp-bytemd-content .hljs-meta .hljs-string,
+.wp-bytemd-content.bytemd-theme-dark .hljs-regexp,
+.wp-bytemd-content.bytemd-theme-dark .hljs-string,
+.wp-bytemd-content.bytemd-theme-dark .hljs-meta .hljs-string {
+	color: #a5d6ff;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-built_in,
+.bytemd-theme-dark .wp-bytemd-content .hljs-symbol,
+.wp-bytemd-content.bytemd-theme-dark .hljs-built_in,
+.wp-bytemd-content.bytemd-theme-dark .hljs-symbol {
+	color: #ffa657;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-comment,
+.bytemd-theme-dark .wp-bytemd-content .hljs-code,
+.bytemd-theme-dark .wp-bytemd-content .hljs-formula,
+.wp-bytemd-content.bytemd-theme-dark .hljs-comment,
+.wp-bytemd-content.bytemd-theme-dark .hljs-code,
+.wp-bytemd-content.bytemd-theme-dark .hljs-formula {
+	color: #8b949e;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-name,
+.bytemd-theme-dark .wp-bytemd-content .hljs-quote,
+.bytemd-theme-dark .wp-bytemd-content .hljs-selector-tag,
+.bytemd-theme-dark .wp-bytemd-content .hljs-selector-pseudo,
+.wp-bytemd-content.bytemd-theme-dark .hljs-name,
+.wp-bytemd-content.bytemd-theme-dark .hljs-quote,
+.wp-bytemd-content.bytemd-theme-dark .hljs-selector-tag,
+.wp-bytemd-content.bytemd-theme-dark .hljs-selector-pseudo {
+	color: #7ee787;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-subst,
+.wp-bytemd-content.bytemd-theme-dark .hljs-subst {
+	color: #c9d1d9;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-section,
+.wp-bytemd-content.bytemd-theme-dark .hljs-section {
+	color: #1f6feb;
+	font-weight: bold;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-bullet,
+.wp-bytemd-content.bytemd-theme-dark .hljs-bullet {
+	color: #f2cc60;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-addition,
+.wp-bytemd-content.bytemd-theme-dark .hljs-addition {
+	color: #aff5b4;
+	background-color: #033a16;
+}
+
+.bytemd-theme-dark .wp-bytemd-content .hljs-deletion,
+.wp-bytemd-content.bytemd-theme-dark .hljs-deletion {
+	color: #ffdcd7;
+	background-color: #67060c;
+}
+
+@media (prefers-color-scheme: dark) {
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-doctag,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-keyword,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-meta .hljs-keyword,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-template-tag,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-template-variable,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-type,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-variable.language_ {
+		color: #ff7b72;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-title,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-title.class_,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-title.class_.inherited__,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-title.function_ {
+		color: #d2a8ff;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-attr,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-attribute,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-literal,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-meta,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-number,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-operator,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-variable,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-selector-attr,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-selector-class,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-selector-id {
+		color: #79c0ff;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-regexp,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-string,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-meta .hljs-string {
+		color: #a5d6ff;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-built_in,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-symbol {
+		color: #ffa657;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-comment,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-code,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-formula {
+		color: #8b949e;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-name,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-quote,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-selector-tag,
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-selector-pseudo {
+		color: #7ee787;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-subst {
+		color: #c9d1d9;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-section {
+		color: #1f6feb;
+		font-weight: bold;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-bullet {
+		color: #f2cc60;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-addition {
+		color: #aff5b4;
+		background-color: #033a16;
+	}
+
+	.wp-bytemd-content:not(.bytemd-theme-light) .hljs-deletion {
+		color: #ffdcd7;
+		background-color: #67060c;
 	}
 }
 

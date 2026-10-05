@@ -23,7 +23,8 @@
     "bytemd": "1.22.0",
     "highlight.js": "11.11.1",
     "katex": "0.16.25",
-    "mermaid": "11.17.2"
+    "mermaid": "11.17.2",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

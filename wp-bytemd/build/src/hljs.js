@@ -93,8 +93,10 @@ Object.keys( languages ).forEach( function ( name ) {
   hljs.registerLanguage( name, languages[ name ] )
 } )
 
-hljs.registerAliases( [ 'html', 'xhtml', 'svg', 'vue', 'plist', 'rss' ], { languageName: 'xml' } )
+hljs.registerAliases( [ 'html', 'xhtml', 'htm', 'svg', 'vue', 'plist', 'rss' ], { languageName: 'xml' } )
 hljs.registerAliases( [ 'sh', 'zsh', 'console', 'shell-session' ], { languageName: 'bash' } )
+hljs.registerAliases( [ 'c++' ], { languageName: 'cpp' } )
+hljs.registerAliases( [ 'text', 'txt', 'plain', 'none' ], { languageName: 'plaintext' } )
 hljs.registerAliases( [ 'js', 'jsx', 'mjs', 'cjs' ], { languageName: 'javascript' } )
 hljs.registerAliases( [ 'ts', 'tsx' ], { languageName: 'typescript' } )
 hljs.registerAliases( [ 'py', 'pycon' ], { languageName: 'python' } )

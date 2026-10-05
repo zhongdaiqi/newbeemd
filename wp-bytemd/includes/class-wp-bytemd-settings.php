@@ -145,6 +145,12 @@ class WP_ByteMD_Settings {
 						'desc'    => __( '两种方式的差异：服务端更快更利于收录；浏览器端能 100% 复现 ByteMD 预览（含 Mermaid / KaTeX）。', 'newbee-markdown-editor' ),
 					),
 					array(
+						'id'    => 'frontend_highlight',
+						'type'  => 'checkbox',
+						'title' => __( '前端代码高亮与复制按钮', 'newbee-markdown-editor' ),
+						'desc'  => __( '服务端渲染模式下自动高亮代码块（highlight.js，随插件打包、仅在含代码的页面加载），并在代码块右上角提供复制按钮。', 'newbee-markdown-editor' ),
+					),
+					array(
 						'id'      => 'frontend_theme',
 						'type'    => 'select',
 						'title'   => __( '正文配色', 'newbee-markdown-editor' ),
@@ -365,6 +371,7 @@ class WP_ByteMD_Settings {
 			'force_classic',
 			'enable_block',
 			'allow_raw_html',
+			'frontend_highlight',
 			'frontend_math',
 			'frontend_mermaid',
 			'enable_shortcode',
@@ -399,7 +406,13 @@ class WP_ByteMD_Settings {
 			true
 		) ? $input['theme'] : $defaults['theme'];
 
-		$out['frontend_theme'] = $out['theme'];
+		// The front-end palette is an independent choice: someone can want a
+		// light editor inside a dark admin, while visitors get a dark article.
+		$out['frontend_theme'] = in_array(
+			isset( $input['frontend_theme'] ) ? $input['frontend_theme'] : '',
+			array( 'auto', 'light', 'dark' ),
+			true
+		) ? $input['frontend_theme'] : $defaults['frontend_theme'];
 
 		$out['locale'] = in_array(
 			isset( $input['locale'] ) ? $input['locale'] : '',

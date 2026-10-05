@@ -99,12 +99,6 @@ class WP_ByteMD_Frontend {
 			return $content;
 		}
 
-		// Already rendered (theme called the filter twice, or the content came
-		// from a template that pre-rendered it).
-		if ( false !== strpos( $content, 'wp-bytemd-content' ) || false !== strpos( $content, 'data-bytemd-viewer' ) ) {
-			return $content;
-		}
-
 		$post = get_post();
 
 		if ( ! $post instanceof WP_Post ) {
@@ -117,6 +111,14 @@ class WP_ByteMD_Frontend {
 		}
 
 		if ( ! WP_ByteMD_Markdown::is_markdown_post( $post ) ) {
+			return $content;
+		}
+
+		// Already rendered (a theme called the filter twice, or a template
+		// pre-rendered it). Match on the wrapper's actual HTML attributes — a
+		// plain-text check would false-positive on posts that merely *mention*
+		// these strings, e.g. an article showing the plugin's markup.
+		if ( preg_match( '/<div[^>]*data-bytemd-(?:rendered|viewer)[=\s>]/', (string) $content ) ) {
 			return $content;
 		}
 

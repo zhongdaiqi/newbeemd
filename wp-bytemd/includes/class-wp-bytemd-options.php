@@ -83,6 +83,7 @@ class WP_ByteMD_Options {
 			// Front-end output.
 			'frontend_render'        => 'server',
 			'allow_raw_html'         => 0,
+			'frontend_highlight'     => 1,
 			'frontend_math'          => 1,
 			'frontend_mermaid'       => 1,
 			'frontend_theme'         => 'auto',
@@ -224,6 +225,8 @@ class WP_ByteMD_Options {
 			'mermaid'   => self::vendor_url( 'bytemd-mermaid.js' ),
 			'katex_js'  => self::vendor_url( 'bytemd-katex.js' ),
 			'katex_css' => self::vendor_url( 'bytemd-katex.css' ),
+			'hljs_js'   => self::vendor_url( 'bytemd-hljs.js' ),
+			'hljs_css'  => self::vendor_url( 'bytemd-hljs.css' ),
 		);
 	}
 

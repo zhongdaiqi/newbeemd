@@ -8,6 +8,16 @@ import { Editor } from 'bytemd'
 import zhHans from 'bytemd/locales/zh_Hans.json'
 import en from 'bytemd/locales/en.json'
 
+/*
+ * ByteMD's toolbar dropdowns (headings, link insertion, …) are tippy
+ * popovers hard-wired to the `light-border` theme. tippy ships no styling of
+ * its own until its stylesheet is loaded — without these two imports the
+ * dropdown renders as transparent text floating over the editor, which is
+ * unreadable on a dark admin colour scheme.
+ */
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light-border.css'
+
 import {
   pluginFactories,
   buildPlugins,

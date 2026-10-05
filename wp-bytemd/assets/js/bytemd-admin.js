@@ -73,6 +73,10 @@
 	/**
 	 * Decide whether the surrounding admin UI is dark, so the editor can follow.
 	 *
+	 * The default admin colour schemes paint the *body* (#f0f0f1) and leave
+	 * `#wpwrap` transparent. A transparent background must not be read as
+	 * black — parse the alpha channel and fall back to <body> before giving up.
+	 *
 	 * @return {boolean} True when the admin chrome is dark.
 	 */
 	function adminIsDark() {
@@ -83,15 +87,34 @@
 			return false;
 		}
 
-		var el = document.getElementById( 'wpwrap' ) || document.body;
-		var bg = window.getComputedStyle( el ).backgroundColor;
-		var match = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec( bg );
+		var luminance = -1;
 
-		if ( ! match ) {
-			return false;
+		var candidates = [ document.getElementById( 'wpwrap' ), document.body ];
+
+		for ( var i = 0; i < candidates.length && luminance < 0; i += 1 ) {
+			if ( ! candidates[ i ] ) {
+				continue;
+			}
+
+			var bg = window.getComputedStyle( candidates[ i ] ).backgroundColor;
+			var match = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/.exec( bg );
+
+			if ( ! match ) {
+				continue;
+			}
+
+			// Transparent or translucent background: keep looking at the next
+			// candidate instead of treating it as pure black.
+			if ( match[ 4 ] !== undefined && parseFloat( match[ 4 ] ) < 0.5 ) {
+				continue;
+			}
+
+			luminance = ( 0.299 * +match[ 1 ] + 0.587 * +match[ 2 ] + 0.114 * +match[ 3 ] ) / 255;
 		}
 
-		var luminance = ( 0.299 * +match[ 1 ] + 0.587 * +match[ 2 ] + 0.114 * +match[ 3 ] ) / 255;
+		if ( luminance < 0 ) {
+			return false;
+		}
 
 		return luminance < 0.5;
 	}
@@ -285,6 +308,9 @@
 
 		if ( adminIsDark() ) {
 			wrap.classList.add( 'wp-bytemd-dark' );
+			// Tippy poppers attach to <body>, outside any .wp-bytemd-dark
+			// wrapper — expose the palette on <html> so the CSS can reach them.
+			document.documentElement.setAttribute( 'data-wp-bytemd-scheme', 'dark' );
 		}
 
 		var state = { value: textarea.value };

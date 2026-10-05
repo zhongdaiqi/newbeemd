@@ -218,6 +218,11 @@ class WP_ByteMD_Assets {
 		return array(
 			'renderMode' => (string) WP_ByteMD_Options::get( 'frontend_render', 'server' ),
 			'plugins'    => array_map( 'boolval', (array) $toggles ),
+			'highlight'  => array(
+				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_highlight' ) && WP_ByteMD_Options::vendor_asset_exists( 'bytemd-hljs.js' ),
+				'js'      => $assets['hljs_js'],
+				'css'     => $assets['hljs_css'],
+			),
 			'math'       => array(
 				'enabled' => (bool) WP_ByteMD_Options::is_on( 'frontend_math' ) && WP_ByteMD_Options::vendor_asset_exists( 'bytemd-katex.js' ),
 				'css'     => $assets['katex_css'],
@@ -230,6 +235,10 @@ class WP_ByteMD_Assets {
 			),
 			'strings'    => array(
 				'mermaidError' => __( '图表渲染失败', 'newbee-markdown-editor' ),
+				'copy'         => __( '复制', 'newbee-markdown-editor' ),
+				'copied'       => __( '已复制', 'newbee-markdown-editor' ),
+				'copyFailed'   => __( '复制失败', 'newbee-markdown-editor' ),
+				'copyAria'     => __( '复制代码', 'newbee-markdown-editor' ),
 			),
 		);
 	}
