@@ -3,7 +3,7 @@
  * Plugin Name:       Newbee Markdown Editor
  * Plugin URI:        https://github.com/zhongdaiqi/newbeemd
  * Description:       Markdown editing for WordPress, built on ByteMD. GFM tables, code highlighting, KaTeX maths and Mermaid diagrams, with server- or client-side rendering of the stored Markdown. Independent, unofficial integration - not affiliated with or endorsed by ByteDance.
- * Version:           1.3.2
+ * Version:           1.3.3
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            钟代麒
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WP_BYTEMD_VERSION', '1.3.2' );
+define( 'WP_BYTEMD_VERSION', '1.3.3' );
 define( 'WP_BYTEMD_BYTEMD_VERSION', '1.22.0' );
 define( 'WP_BYTEMD_FILE', __FILE__ );
 define( 'WP_BYTEMD_DIR', plugin_dir_path( __FILE__ ) );
